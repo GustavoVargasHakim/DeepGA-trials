@@ -69,7 +69,7 @@ class Encoding:
                     self.second_level.append(random.choice([0,1]))
                 prev += 1
                 
-def decoding(encoding):
+'''def decoding(encoding):
   n_conv = encoding.n_conv
   n_full = encoding.n_full
   first_level = encoding.first_level
@@ -165,7 +165,7 @@ def decoding(encoding):
     classifier += [nn.ReLU(inplace = True)]
     in_size = n_neurons
 
-  return features, classifier, o_sizes
+  return features, classifier, o_sizes'''
        
             
                 
