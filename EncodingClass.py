@@ -5,19 +5,6 @@ Created on Wed Sep 30 09:57:16 2020
 @author: user
 """
 import random
-import torch
-from torchvision import utils
-from torch.utils.data import DataLoader, Dataset
-from torch import nn
-import matplotlib.pyplot as plt
-import numpy as np
-import torch.nn.functional as F
-from torchsummary import summary
-from torch import optim
-import torchvision
-from torchvision import transforms, utils
-import cv2
-import math
 
 '''Hyperparameters configuration'''
 #Convolutional layers
