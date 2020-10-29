@@ -5,15 +5,7 @@ Created on Thu Oct 15 11:12:59 2020
 @author: user
 """
 
-import torch
-from torchvision import utils
 from torch import nn
-import numpy as np
-import torch.nn.functional as F
-from torchsummary import summary
-from torch import optim
-import torchvision
-from torchvision import transforms, utils
 import math
 import torch
 
@@ -40,7 +32,6 @@ def decoding(encoding):
     layer = first_level[i]
     n_filters = layer['nfilters']
     f_size = layer['fsize']
-    block = []
     if i == 0 or i == 1:
       if layer['pool'] == 'off':
         operation = [nn.Conv2d(in_channels = in_channels, out_channels = n_filters, kernel_size = f_size, padding = 1),
@@ -119,6 +110,9 @@ def decoding(encoding):
     classifier += [nn.ReLU(inplace = True)]
     in_size = n_neurons
 
+  ##Last layer generates the last neurons for softmax (change this for binary classification)
+  classifier += [nn.Linear(n_neurons, 3)]
+
   return features, classifier, o_sizes
 
 '''Networks class'''
@@ -177,11 +171,11 @@ class CNN(nn.Module):
       
       prev += 1
     
-    print('Classification size: ', x.shape)
+    #print('Classification size: ', x.shape)
     x = torch.flatten(x,1)
     '''Classification'''
     '''for l in self.classifier:
       x = l(x)'''
     x = self.classifier(x)
-    print(x.shape)
-    return nn.Softmax(x)
+    #print(x.shape)
+    return nn.functional.log_softmax(x, dim=1)
