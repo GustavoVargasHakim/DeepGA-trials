@@ -39,7 +39,7 @@ mr = 0.3 #Mutation rate
 N = 20 #Population size
 T = 50 #Number of generations
 t_size = 5 #tournament size
-w = 0.1 #penalization weight
+w = 0.3 #penalization weight
 max_params = 1e6
 
 '''Evaluating the objective function of an encoding (accuracy + w*No. Params)'''
@@ -52,7 +52,7 @@ def evaluate_individual(x):
     parms = sum(p.numel() for p in cnn.parameters() if p.requires_grad)
     
     #Passing the CNN to a GPU (if only one GPU is available)
-    cnn.to(decive, dtype = torch.float32)
+    cnn.to(device, dtype = torch.float32)
     
     #Defining optimizer
     opt = optim.Adam(cnn.parameters(), lr = lr)
@@ -61,7 +61,7 @@ def evaluate_individual(x):
     accuracy, _ = train_val(num_epochs, cnn, loss_func, opt, train_dl, test_dl)
     
     #Fitness function
-    f = accuracy + w*(parms - max_params)/max_params
+    f = abs(accuracy - w*(1 - abs((max_params - params)/max_params)))
     
     return f, accuracy
     
