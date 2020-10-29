@@ -10,13 +10,8 @@ from EncodingClass import *
 from Decoding import *
 from DataReader import *
 from Training import *
-from torchvision import utils
 import numpy as np
-import torch.nn.functional as F
-from torchsummary import summary
 from torch import optim
-from torchvision import transforms
-import math
 
 
 '''Loading data'''
