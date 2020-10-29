@@ -225,6 +225,7 @@ def mutation(x):
             x.second_level[k] = 0
         else:
             x.second_level[k] = 1
+    
 
 def selection(tournament, style):
     '''Stochastic tournament selection'''
