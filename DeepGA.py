@@ -12,6 +12,7 @@ from DataReader import *
 from Training import *
 import numpy as np
 from torch import optim
+import pandas as pd
 
 
 '''Loading data'''
@@ -40,7 +41,12 @@ N = 20 #Population size
 T = 50 #Number of generations
 t_size = 5 #tournament size
 w = 0.3 #penalization weight
-max_params = 1e6
+max_params = 1.5e6
+
+#Reading GPU
+if torch.cuda.is_available():
+    device = torch.device("cuda:0")
+    print(decive)
 
 '''Evaluating the objective function of an encoding (accuracy + w*No. Params)'''
 def evaluate_individual(x):
@@ -67,6 +73,8 @@ def evaluate_individual(x):
     
 '''Initialize population'''
 pop = []
+bestAcc = []
+bestF = []
 for n in range(N):
     #Creating a genome (genetic encoding)
     e = Encoding(min_conv,max_conv,min_full,max_full) 
@@ -81,7 +89,7 @@ for t in range(T):
     print('Generation: ', t)
     
     offspring = []
-    while len(offspring) < N:
+    while len(offspring) < int(N/2):
         #Parents selection through tournament 
         tournament = random.sample(pop, t_size)
         p1 = selection(tournament, 'max')
@@ -109,16 +117,59 @@ for t in range(T):
             offspring.append([c2, f2, acc2])
         
         #Sorting offspring based on fitness
-        offspring.sort(key = lambda x: x[1])
+        #offspring.sort(key = lambda x: x[1])
         leader = max(pop, key = lambda x: x[1])
+        bestAcc.append(leader[2])
+        bestF.append(leader[1])
         
         print('Best fitness: ', leader[1])
         print('Best accuracy: ', leader[2])
+        print('--------------------------------------------')
         
         #Replacement with elitism
-        pop = [leader] + offspring[:-1]
-        
+        #pop = [leader] + offspring[:-1]
+        pop = pop + offspring
+        pop.sort(pop, key = lambda x: x[1])
+        pop = pop[:N]
+
+results = pd.DataFrame(list(zip(bestAcc, bestF)), columns = ['Accuracy', 'Fitness'])
+pop = []
+pop.append(Encoding(min_conv,max_conv,min_full,max_full))
+final_networks = []
+final_connections = []
+for p in pop:
+    n_conv = p.n_conv
+    n_full = p.n_full
+    description = 'The network has ' + str(n_conv) + ' convolutional layers ' + 'with: '
+    for i in range(n_conv):
+        nfilters = str(p.first_level[i]['nfilters'])
+        fsize = str(p.first_level[i]['fsize'])
+        pool = str(p.first_level[i]['pool'])
+        psize = str(p.first_level[i]['psize'])
+        layer = '(' + nfilters + ', ' + fsize + ', ' + pool + ', ' + psize + ') '
+        description += layer
+    description += 'and '
+    description += str(n_full)
+    description += ' '
+    description += 'fully-connected layers with: '
+    for i in range(n_conv, n_conv+n_full):
+        neurons = str(p.first_level[i]['neurons'])
+        layer = '(' + neurons + ')'
+        description += layer
+    description += ' neurons'
+    final_networks.append(description)
     
+    connections = ''
+    for bit in p.second_level:
+        connections += str(bit)
+    final_connections.append(connections)
+        
+final_population = pd.DataFrame(list(zip(final_networks, final_connections)), columns = ['Network Architecture', 'Connections'])
+
+'''Saving Results as CSV'''
+final_population.to_csv('final_population.csv', index = False)
+results.to_csv('Final_population.csv', index = False)      
+
     
     
 
