@@ -40,7 +40,7 @@ def loading_data():
     
     return train_dl, test_dl
 
-#train_dl, test_dl = loading_data()
+train_dl, test_dl = loading_data()
 
 #Iterate over batches
 for i_batch, sample_batched in enumerate(test_dl):
@@ -80,6 +80,8 @@ if torch.cuda.is_available():
     device = torch.device("cuda:0")
     print(device)
 
+print('GPUs: ', torch.cuda.device_count())
+
 '''Evaluating the objective function of an encoding (accuracy + w*No. Params)'''
 def evaluate_individual(x):
     #Decoding the network
@@ -104,7 +106,7 @@ def evaluate_individual(x):
     return f, accuracy
     
 '''Initialize population'''
-pop = []
+'''pop = []
 bestAcc = []
 bestF = []
 for n in range(N):
@@ -114,10 +116,10 @@ for n in range(N):
     #Evaluate individual
     f, accuracy = evaluate_individual(e)
     
-    pop.append([e, f, accuracy])
+    pop.append([e, f, accuracy])'''
 
 '''Genetic Algorithm'''
-for t in range(T):
+'''for t in range(T):
     print('Generation: ', t)
     
     offspring = []
@@ -192,13 +194,13 @@ for p in pop:
     connections = ''
     for bit in p.second_level:
         connections += str(bit)
-    final_connections.append(connections)
+    final_connections.append(connections)'''
         
-final_population = pd.DataFrame(list(zip(final_networks, final_connections)), columns = ['Network Architecture', 'Connections'])
+#final_population = pd.DataFrame(list(zip(final_networks, final_connections)), columns = ['Network Architecture', 'Connections'])
 
 '''Saving Results as CSV'''
-final_population.to_csv('final_population.csv', index = False)
-results.to_csv('Final_population.csv', index = False)      
+#final_population.to_csv('final_population.csv', index = False)
+#results.to_csv('Final_population.csv', index = False)      
 
     
     
