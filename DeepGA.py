@@ -42,6 +42,8 @@ T = 50 #Number of generations
 t_size = 5 #tournament size
 w = 0.3 #penalization weight
 max_params = 1.5e6
+lr = 1e-4
+num_epochs = 10
 
 #Reading GPU
 if torch.cuda.is_available():
@@ -93,10 +95,10 @@ for t in range(T):
         #Parents selection through tournament 
         tournament = random.sample(pop, t_size)
         p1 = selection(tournament, 'max')
-        tournament = random.rample(pop, t_size)
+        tournament = random.sample(pop, t_size)
         p2 = selection(tournament, 'max')
         while p1 == p2:
-            tournament = random.rample(pop, t_size)
+            tournament = random.sample(pop, t_size)
             p2 = selection(tournament, 'max')
         
         #Crossover + Mutation
@@ -116,21 +118,19 @@ for t in range(T):
             offspring.append([c1, f1, acc1])
             offspring.append([c2, f2, acc2])
         
-        #Sorting offspring based on fitness
-        #offspring.sort(key = lambda x: x[1])
-        leader = max(pop, key = lambda x: x[1])
-        bestAcc.append(leader[2])
-        bestF.append(leader[1])
+       
+    #Replacement with elitism
+    pop = pop + offspring
+    pop.sort(key = lambda x: x[1])
+    pop = pop[:N]
+    
+    leader = max(pop, key = lambda x: x[1])
+    bestAcc.append(leader[2])
+    bestF.append(leader[1])
         
-        print('Best fitness: ', leader[1])
-        print('Best accuracy: ', leader[2])
-        print('--------------------------------------------')
-        
-        #Replacement with elitism
-        #pop = [leader] + offspring[:-1]
-        pop = pop + offspring
-        pop.sort(pop, key = lambda x: x[1])
-        pop = pop[:N]
+    print('Best fitness: ', leader[1])
+    print('Best accuracy: ', leader[2])
+    print('--------------------------------------------')
 
 results = pd.DataFrame(list(zip(bestAcc, bestF)), columns = ['Accuracy', 'Fitness'])
 pop = []
