@@ -64,8 +64,8 @@ def train_val(epochs, model, loss_func, opt, train_dl, test_dl):
     device = torch.device("cuda:0")
     print(device)
  
-  model = nn.DataParallel(model)
-  model.to(device)
+  model = nn.DataParallel(model, device_ids = [0,1])
+  #model.to(device)
   
   for epoch in range(epochs):
     #print(epoch)
