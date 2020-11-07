@@ -39,6 +39,7 @@ def loading_data():
     test_dl = DataLoader(test_ds, batch_size = 24, shuffle = True)
     
     return train_dl, test_dl
+
 train_dl, test_dl = loading_data()
 
 #Iterate over batches
