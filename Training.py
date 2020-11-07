@@ -68,7 +68,7 @@ def train_val(epochs, model, loss_func, train_dl, test_dl):
       model = nn.DataParallel(model)
   model.to(device)
   
-  opt = optim.Adam(cnn.parameters(), lr = lr)
+  opt = optim.Adam(model.parameters(), lr = lr)
   
   for epoch in range(epochs):
     #print(epoch)
