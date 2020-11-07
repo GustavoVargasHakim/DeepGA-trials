@@ -6,6 +6,7 @@ Created on Thu Oct 29 10:43:11 2020
 """
 
 import torch
+#from torch import nn
 
 #Helper function to compute de loss on a batch
 def loss_batch(loss_func, xb, yb, yb_h, opt = None):
