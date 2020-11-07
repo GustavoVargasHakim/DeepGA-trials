@@ -5,6 +5,8 @@ Created on Thu Oct 29 10:43:11 2020
 @author: user
 """
 
+import torch
+
 #Helper function to compute de loss on a batch
 def loss_batch(loss_func, xb, yb, yb_h, opt = None):
   #Obtain the loss
