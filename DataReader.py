@@ -56,7 +56,7 @@ class ToTensor(object):
     return {'image':torch.from_numpy(image),
             'label':label}
 
-def loading_data():
+'''def loading_data():
     #Loading Datasets
     covid_ds = CovidDataset(root = c_root, labels = c_labels, transform = transforms.Compose([ToTensor()]))
     normal_ds = CovidDataset(root = n_root, labels = n_labels, transform = transforms.Compose([ToTensor()]))
@@ -78,4 +78,4 @@ def loading_data():
     train_dl = DataLoader(train_ds, batch_size = 24, shuffle = True)
     test_dl = DataLoader(test_ds, batch_size = 24, shuffle = True)
     
-    return train_dl, test_dl
+    return train_dl, test_dl'''
