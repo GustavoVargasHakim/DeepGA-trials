@@ -91,14 +91,14 @@ def evaluate_individual(x):
     params = sum(p.numel() for p in cnn.parameters() if p.requires_grad)
     
     #Passing the CNN to a GPU 
-    cnn = nn.DataParallel(cnn) #Uncomment this if more than one GPU is available
-    cnn.to(device, dtype = torch.float32)
+    #cnn = nn.DataParallel(cnn) #Uncomment this if more than one GPU is available
+    #cnn.to(device, dtype = torch.float32)
     
     #Defining optimizer
     opt = optim.Adam(cnn.parameters(), lr = lr)
     
     #Training the network
-    accuracy, _ = train_val(device, num_epochs, cnn, loss_func, opt, train_dl, test_dl)
+    accuracy, _ = train_val(num_epochs, cnn, loss_func, opt, train_dl, test_dl)
     
     #Fitness function
     f = abs(accuracy - w*(1 - abs((max_params - params)/max_params)))
