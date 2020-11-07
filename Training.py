@@ -31,7 +31,7 @@ def metrics_batch(target, output):
   return corrects
 
 #Helper function to compute the loss and metric values for a dataset
-def loss_epoch(model, loss_func, dataset_dl, opt = None):
+def loss_epoch(device, model, loss_func, dataset_dl, opt = None):
   loss = 0.0
   metric = 0.0
   len_data = len(dataset_dl.dataset)
@@ -57,11 +57,11 @@ def loss_epoch(model, loss_func, dataset_dl, opt = None):
   #return metric
 
 #Define the training function
-def train_val(epochs, model, loss_func, opt, train_dl, test_dl):
+def train_val(device, epochs, model, loss_func, opt, train_dl, test_dl):
   for epoch in range(epochs):
     print(epoch)
     model.train()
-    train_loss, train_metric = loss_epoch(model, loss_func, train_dl, opt)
+    train_loss, train_metric = loss_epoch(device, model, loss_func, train_dl, opt)
     #train_metric = loss_epoch(model, loss_func, train_dl, opt)
     model.eval()
     with torch.no_grad():
