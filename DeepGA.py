@@ -14,6 +14,7 @@ import numpy as np
 from torch import optim
 import pandas as pd
 import timeit
+import torch
 
 
 '''Loading data'''
