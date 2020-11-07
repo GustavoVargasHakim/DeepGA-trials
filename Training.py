@@ -65,7 +65,7 @@ def train_val(device, epochs, model, loss_func, opt, train_dl, test_dl):
     #train_metric = loss_epoch(model, loss_func, train_dl, opt)
     model.eval()
     with torch.no_grad():
-      val_loss, val_metric = loss_epoch(model, loss_func, test_dl)
+      val_loss, val_metric = loss_epoch(device, model, loss_func, test_dl)
       #val_metric = loss_epoch(model, loss_func, test_dl)
     accuracy = 100*val_metric
 
