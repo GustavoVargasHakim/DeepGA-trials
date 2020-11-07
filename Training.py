@@ -59,17 +59,17 @@ def loss_epoch(device, model, loss_func, dataset_dl, opt = None):
   #return metric
 
 #Define the training function
-def train_val(epochs, model, loss_func, train_dl, test_dl):
+def train_val(device, epochs, model, opt, loss_func, train_dl, test_dl):
   lr = 1e-4
   #Reading GPU
-  if torch.cuda.is_available():
-    device = torch.device("cuda:0")
-    print(device)
+  #if torch.cuda.is_available():
+  #device = torch.device("cuda:0")
+  #print(device)
   #if torch.cuda.device_count() > 1:
-  model = nn.DataParallel(model, device_ids=[0,1], output_device = device).to(device)
+  #model = nn.DataParallel(model, device_ids=[0,1], output_device = device).to(device)
   #model.to(device)
   
-  opt = optim.Adam(model.parameters(), lr = lr)
+  #opt = optim.Adam(model.parameters(), lr = lr)
   
   for epoch in range(epochs):
     #print(epoch)
@@ -85,3 +85,59 @@ def train_val(epochs, model, loss_func, train_dl, test_dl):
     #print("Epoch: %d, train loss: %.6f, val loss: %.6f, test accuracy: %.2f" %(epoch, train_loss, val_loss, accuracy))
   
   return accuracy, model
+
+#+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+#Helper function to compute the loss and metric values for a dataset
+'''def loss_epoch(device, model, loss_func, dataset_dl, opt1 = None, opt2 = None):
+  loss = 0.0
+  metric = 0.0
+  len_data = len(dataset_dl.dataset)
+  for i, data in enumerate(dataset_dl, 0):
+    #print('batch: ', i)
+    xb, yb = data['image'], data['label']
+    xb = xb.type(torch.double).to(device, dtype = torch.float32)
+    yb = yb.to(device, dtype = torch.long)
+    
+    #Obtain model output
+    yb_h = model(xb)
+
+    loss_b, metric_b = loss_batch(loss_func, xb, yb, yb_h, opt)
+    #metric_b = loss_batch(loss_func, xb, yb, yb_h, opt)
+    loss += loss_b
+    if metric_b is not None:
+      metric += metric_b
+  
+  loss /= len_data
+  metric /= len_data
+
+  return loss, metric'''
+#Define the training function
+def train_val2(epochs, model1, model2, loss_func, train_dl, test_dl):
+  lr = 1e-4
+  #Reading GPU
+  #device1 = torch.device("cuda:0")
+  #device2 = torch.device("cuda:1")
+  #model1.to(device1)
+  #model2.to(device2)
+  
+  #opt1 = optim.Adam(model1.parameters(), lr = lr)
+  #opt2 = optim.Adam(model2.parameters(), lr = lr)
+  
+  for epoch in range(epochs):
+    #print(epoch)
+    model1.train()
+    model2.train()
+    train_loss1, train_metric1, train_loss2, train_metric2 = loss_epoch(device1, device2, model1, model2, loss_func, train_dl, opt1, opt2)
+    #train_metric = loss_epoch(model, loss_func, train_dl, opt)
+    model1.eval()
+    model2.eval()
+    with torch.no_grad():
+      val_loss1, val_metric1, val_loss2, val_metric2 = loss_epoch(device1, device2, model1, model2, loss_func, test_dl)
+      #val_metric = loss_epoch(model, loss_func, test_dl)
+    accuracy1 = 100*val_metric1
+    accuracy2 = 100*val_metric2
+
+    #print("Epoch: %d, train loss: %.6f, val loss: %.6f, test accuracy: %.2f" %(epoch, train_loss, val_loss, accuracy))
+  
+  return accuracy1, accuracy2, model1, model2
