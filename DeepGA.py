@@ -15,6 +15,7 @@ from torch import optim
 import pandas as pd
 import timeit
 import torch
+from torch import nn
 
 
 '''Loading data'''
@@ -93,7 +94,8 @@ def evaluate_individual(x):
     cnn = CNN(x, network[0], network[1], network[2])
     params = sum(p.numel() for p in cnn.parameters() if p.requires_grad)
     
-    #Passing the CNN to a GPU (if only one GPU is available)
+    #Passing the CNN to a GPU 
+    cnn = nn.DataParallel(cnn) #Uncomment this if more than one GPU is available
     cnn.to(device, dtype = torch.float32)
     
     #Defining optimizer
