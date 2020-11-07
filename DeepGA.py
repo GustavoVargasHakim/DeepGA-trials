@@ -16,6 +16,29 @@ import pandas as pd
 
 
 '''Loading data'''
+def loading_data():
+    #Loading Datasets
+    covid_ds = CovidDataset(root = c_root, labels = c_labels, transform = transforms.Compose([ToTensor()]))
+    normal_ds = CovidDataset(root = n_root, labels = n_labels, transform = transforms.Compose([ToTensor()]))
+    pneumonia_ds = CovidDataset(root = p_root, labels = p_labels, transform = transforms.Compose([ToTensor()]))
+    
+    #Merging Covid, normal, and pneumonia Datasets
+    dataset = torch.utils.data.ConcatDataset([covid_ds, normal_ds, pneumonia_ds])
+    lengths = [int(len(dataset)*0.7), int(len(dataset)*0.3)+1]
+    train_ds, test_ds = torch.utils.data.random_split(dataset = dataset, lengths = lengths)
+    
+    i = 1836
+    #Testing
+    #print("Length of Training Dataset: {}".format(len(train_ds)))
+    #print("Length of Test Dataset: {}".format(len(test_ds)))
+    print("Shape of images as tensors: {}".format(dataset[i]['image'].shape))
+    print("Label of image i: {}".format(dataset[i]['label']))
+    
+    #Creating Dataloaders
+    train_dl = DataLoader(train_ds, batch_size = 24, shuffle = True)
+    test_dl = DataLoader(test_ds, batch_size = 24, shuffle = True)
+    
+    return train_dl, test_dl
 train_dl, test_dl = loading_data()
 
 #Iterate over batches
