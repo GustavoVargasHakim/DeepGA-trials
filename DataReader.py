@@ -4,6 +4,7 @@
 from torch.utils.data import Dataset, DataLoader
 import cv2
 import numpy as np
+from torchvision import transforms
 
 #Arrays of labels
 c_labels = np.ones(918, dtype = np.int8) #Codiv
