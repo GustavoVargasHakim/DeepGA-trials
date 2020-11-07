@@ -59,7 +59,7 @@ def loss_epoch(device, model, loss_func, dataset_dl, opt = None):
 
 #Define the training function
 def train_val(epochs, model, loss_func, train_dl, test_dl):
-    lr = 1e-4
+  lr = 1e-4
   #Reading GPU
   if torch.cuda.is_available():
     device = torch.device("cuda:0")
