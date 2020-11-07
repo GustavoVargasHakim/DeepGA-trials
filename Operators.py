@@ -243,9 +243,9 @@ def selection(tournament, style):
     return p
     
 
-#random.seed(0)
-#e1 = Encoding(2,8,1,4)
-#e2 = Encoding(2,8,1,4)
+random.seed(0)
+e1 = Encoding(2,8,1,4)
+e2 = Encoding(2,8,1,4)
 #e2 = Encoding(8,8,4,4)
 
-#c1, c2 = crossover(e1,e2)
+c1, c2 = crossover(e1,e2)
