@@ -18,6 +18,12 @@ import pandas as pd
 '''Loading data'''
 train_dl, test_dl = loading_data()
 
+#Iterate over batches
+for i_batch, sample_batched in enumerate(test_dl):
+  print(sample_batched['image'].shape)
+  print(sample_batched['label'])
+  break
+
 '''Defining CNN hyperparameters'''
 #Defining loss function
 loss_func = nn.NLLLoss(reduction = "sum")
