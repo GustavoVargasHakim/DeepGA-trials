@@ -151,16 +151,16 @@ while len(pop) < N:
     e2 = Encoding(min_conv,max_conv,min_full,max_full)
     
     #Decoding the network
-    network1 = decoding(e1, dtype = torch.float32)
-    network2 = decoding(e2, dtype = torch.float32)
+    network1 = decoding(e1)
+    network2 = decoding(e2)
     
     #Creating the CNN (and obtaining number of parameters)
     cnn1 = CNN(e1, network1[0], network1[1], network1[2])
     cnn2 = CNN(e2, network2[0], network2[1], network2[2])
     
     #Passing to GPU
-    cnn1.to(device1)
-    cnn2.to(device2)
+    cnn1.to(device1, dtype = torch.float32)
+    cnn2.to(device2, dtype = torch.float32)
        
     #Evaluate individual
     #f, accuracy = evaluate_individual2(e1, e2)
