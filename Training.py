@@ -59,7 +59,7 @@ def loss_epoch(device, model, loss_func, dataset_dl, opt = None):
 #Define the training function
 def train_val(device, epochs, model, loss_func, opt, train_dl, test_dl):
   for epoch in range(epochs):
-    print(epoch)
+    #print(epoch)
     model.train()
     train_loss, train_metric = loss_epoch(device, model, loss_func, train_dl, opt)
     #train_metric = loss_epoch(model, loss_func, train_dl, opt)
