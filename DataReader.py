@@ -67,6 +67,13 @@ def loading_data():
     lengths = [int(len(dataset)*0.7), int(len(dataset)*0.3)+1]
     train_ds, test_ds = torch.utils.data.random_split(dataset = dataset, lengths = lengths)
     
+    i = 1836
+    #Testing
+    print("Length of Training Dataset: {}".format(len(train_ds)))
+    print("Length of Test Dataset: {}".format(len(test_ds)))
+    print("Shape of images as tensors: {}".format(dataset[i]['image'].shape))
+    print("Label of image i: {}".format(dataset[i]['label']))
+    
     #Creating Dataloaders
     train_dl = DataLoader(train_ds, batch_size = 24, shuffle = True)
     test_dl = DataLoader(test_ds, batch_size = 24, shuffle = True)
