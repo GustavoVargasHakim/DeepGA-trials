@@ -64,7 +64,7 @@ def train_val(epochs, model, loss_func, train_dl, test_dl):
   if torch.cuda.is_available():
     device = torch.device("cuda:0")
     print(device)
-  if torch.cude.device_count() > 1:
+  if torch.cuda.device_count() > 1:
       model = nn.DataParallel(model)
   model.to(device)
   
