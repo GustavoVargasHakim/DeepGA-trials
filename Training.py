@@ -65,9 +65,9 @@ def train_val(epochs, model, loss_func, train_dl, test_dl):
   if torch.cuda.is_available():
     device = torch.device("cuda:0")
     print(device)
-  if torch.cuda.device_count() > 1:
-      model = nn.DataParallel(model, device_ids=[0,1])
-  model.to(device)
+  #if torch.cuda.device_count() > 1:
+  model = nn.DataParallel(model, device_ids=[0,1], output_device = device).to(device)
+  #model.to(device)
   
   opt = optim.Adam(model.parameters(), lr = lr)
   
