@@ -2,6 +2,7 @@
 #Dataset Class
 
 from torch.utils.data import Dataset, DataLoader
+import torch
 import cv2
 import numpy as np
 from torchvision import transforms
