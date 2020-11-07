@@ -91,7 +91,7 @@ def evaluate_individual(x):
     
     #Creating the CNN (and obtaining number of parameters)
     cnn = CNN(x, network[0], network[1], network[2])
-    parms = sum(p.numel() for p in cnn.parameters() if p.requires_grad)
+    params = sum(p.numel() for p in cnn.parameters() if p.requires_grad)
     
     #Passing the CNN to a GPU (if only one GPU is available)
     cnn.to(device, dtype = torch.float32)
