@@ -100,7 +100,7 @@ def evaluate_individual(x):
     opt = optim.Adam(cnn.parameters(), lr = lr)
     
     #Training the network
-    accuracy, _ = train_val(num_epochs, cnn, loss_func, opt, train_dl, test_dl)
+    accuracy, _ = train_val(device, num_epochs, cnn, loss_func, opt, train_dl, test_dl)
     
     #Fitness function
     f = abs(accuracy - w*(1 - abs((max_params - params)/max_params)))
