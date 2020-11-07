@@ -13,6 +13,7 @@ from Training import *
 import numpy as np
 from torch import optim
 import pandas as pd
+import timeit
 
 
 '''Loading data'''
@@ -43,10 +44,10 @@ def loading_data():
 train_dl, test_dl = loading_data()
 
 #Iterate over batches
-for i_batch, sample_batched in enumerate(test_dl):
-  print(sample_batched['image'].shape)
-  print(sample_batched['label'])
-  break
+#for i_batch, sample_batched in enumerate(test_dl):
+#  print(sample_batched['image'].shape)
+#  print(sample_batched['label'])
+#  break
 
 '''Defining CNN hyperparameters'''
 #Defining loss function
@@ -67,7 +68,7 @@ max_full = 4
 '''Genetic Algorithm Parameters'''
 cr = 0.7 #Crossover rate
 mr = 0.3 #Mutation rate
-N = 20 #Population size
+N = 5 #Population size
 T = 50 #Number of generations
 t_size = 5 #tournament size
 w = 0.3 #penalization weight
@@ -106,7 +107,8 @@ def evaluate_individual(x):
     return f, accuracy
     
 '''Initialize population'''
-'''pop = []
+start = timeit.default_timer()
+pop = []
 bestAcc = []
 bestF = []
 for n in range(N):
@@ -116,8 +118,11 @@ for n in range(N):
     #Evaluate individual
     f, accuracy = evaluate_individual(e)
     
-    pop.append([e, f, accuracy])'''
+    pop.append([e, f, accuracy])
 
+stop = timeit.default_timer()
+execution_time = stop-start
+print('Training time of 5 Networks: ', execution_time)
 '''Genetic Algorithm'''
 '''for t in range(T):
     print('Generation: ', t)
