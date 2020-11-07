@@ -3,7 +3,8 @@
 
 from torch.utils.data import Dataset, DataLoader
 import torch
-import cv2
+#import cv2
+from PIL import Image
 import numpy as np
 from torchvision import transforms
 
@@ -31,7 +32,8 @@ class CovidDataset(Dataset):
       idx = idx.tolist()
     p_root = self.root[:] 
     img_name_p = p_root + str(idx+1) + '.png'
-    image_p = cv2.imread(img_name_p, 0)
+    #image_p = cv2.imread(img_name_p, 0)
+    image_p = np.asarray(Image.open(img_name_p))
     [H, W] = image_p.shape
     image_p = image_p.reshape((H,W,1))
     p_label = self.labels[idx]
