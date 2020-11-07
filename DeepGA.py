@@ -95,10 +95,10 @@ def evaluate_individual(x):
     #cnn.to(device, dtype = torch.float32)
     
     #Defining optimizer
-    opt = optim.Adam(cnn.parameters(), lr = lr)
+    #opt = optim.Adam(cnn.parameters(), lr = lr)
     
     #Training the network
-    accuracy, _ = train_val(num_epochs, cnn, loss_func, opt, train_dl, test_dl)
+    accuracy, _ = train_val(num_epochs, cnn, loss_func, train_dl, test_dl)
     
     #Fitness function
     f = abs(accuracy - w*(1 - abs((max_params - params)/max_params)))
