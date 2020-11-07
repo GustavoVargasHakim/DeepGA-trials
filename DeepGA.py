@@ -70,55 +70,104 @@ max_full = 4
 '''Genetic Algorithm Parameters'''
 cr = 0.7 #Crossover rate
 mr = 0.3 #Mutation rate
-N = 5 #Population size
+N = 4 #Population size
 T = 50 #Number of generations
 t_size = 5 #tournament size
 w = 0.3 #penalization weight
 max_params = 1.5e6
-lr = 1e-4
 num_epochs = 10
 
 
 #print('GPUs: ', torch.cuda.device_count())
 
 '''Evaluating the objective function of an encoding (accuracy + w*No. Params)'''
-def evaluate_individual(x):
+def evaluate_individual(x, dev):
     #Decoding the network
-    network = decoding(x)
+    #network = decoding(x)
     
     #Creating the CNN (and obtaining number of parameters)
-    cnn = CNN(x, network[0], network[1], network[2])
-    params = sum(p.numel() for p in cnn.parameters() if p.requires_grad)
+    #cnn = CNN(x, network[0], network[1], network[2])
+    #params = sum(p.numel() for p in cnn.parameters() if p.requires_grad)
     
     #Passing the CNN to a GPU 
     #cnn = nn.DataParallel(cnn) #Uncomment this if more than one GPU is available
     #cnn.to(device, dtype = torch.float32)
     
     #Defining optimizer
-    #opt = optim.Adam(cnn.parameters(), lr = lr)
+    opt = optim.Adam(x.parameters(), lr = lr)
     
     #Training the network
-    accuracy, _ = train_val(num_epochs, cnn, loss_func, train_dl, test_dl)
+    accuracy, _ = train_val(dev, num_epochs, x, opt, loss_func, train_dl, test_dl)
+    
+    params = sum(p.numel() for p in x.parameters() if p.requires_grad)
     
     #Fitness function
     f = abs(accuracy - w*(1 - abs((max_params - params)/max_params)))
     
     return f, accuracy
+
+'''Evaluating the objective function of an encoding (accuracy + w*No. Params)'''
+def evaluate_individual2(x, y):
+    #Decoding the network
+    network1 = decoding(x)
+    network2 = decoding(y)
     
+    #Creating the CNN (and obtaining number of parameters)
+    cnn1 = CNN(x, network1[0], network1[1], network1[2])
+    cnn2 = CNN(y, network2[0], network2[1], network2[2])
+    
+    params1 = sum(p.numel() for p in cnn1.parameters() if p.requires_grad)
+    params2 = sum(p.numel() for p in cnn2.parameters() if p.requires_grad)
+    
+    #Passing the CNN to a GPU 
+    #cnn = nn.DataParallel(cnn) #Uncomment this if more than one GPU is available
+    #cnn.to(device, dtype = torch.float32)
+    
+    #Defining optimizer
+    opt = optim.Adam(cnn.parameters(), lr = lr)
+    
+    #Training the network
+    accuracy1, accuracy2, _, _ = train_val2(num_epochs, cnn1, cnn2, loss_func, train_dl, test_dl)
+    
+    #Fitness function
+    f = abs(accuracy - w*(1 - abs((max_params - params)/max_params)))
+    
+    return f, accuracy
+
+
+#Reading GPU
+device1 = torch.device("cuda:0")
+device2 = torch.device("cuda:1")
+
 '''Initialize population'''
 print('Initialize population')
 start = timeit.default_timer()
 pop = []
 bestAcc = []
 bestF = []
-for n in range(N):
+while len(pop) < N:
     #Creating a genome (genetic encoding)
-    e = Encoding(min_conv,max_conv,min_full,max_full) 
+    e1 = Encoding(min_conv,max_conv,min_full,max_full) 
+    e2 = Encoding(min_conv,max_conv,min_full,max_full)
     
+    #Decoding the network
+    network1 = decoding(e1, dtype = torch.float32)
+    network2 = decoding(e2, dtype = torch.float32)
+    
+    #Creating the CNN (and obtaining number of parameters)
+    cnn1 = CNN(e1, network1[0], network1[1], network1[2])
+    cnn2 = CNN(e2, network2[0], network2[1], network2[2])
+    
+    #Passing to GPU
+    cnn1.to(device1)
+    cnn2.to(device2)
+       
     #Evaluate individual
-    f, accuracy = evaluate_individual(e)
-    
-    pop.append([e, f, accuracy])
+    #f, accuracy = evaluate_individual2(e1, e2)
+    f1, accuracy1 = evaluate_individual(cnn1, device1)
+    f2, accuracy2 = evaluate_individual(cnn2, device2)
+    pop.append([e1, f1, accuracy1])
+    pop.append([e2, f2, accuracy2])
 
 stop = timeit.default_timer()
 execution_time = stop-start
