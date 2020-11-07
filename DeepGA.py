@@ -40,7 +40,7 @@ def loading_data():
     
     return train_dl, test_dl
 
-train_dl, test_dl = loading_data()
+#train_dl, test_dl = loading_data()
 
 #Iterate over batches
 for i_batch, sample_batched in enumerate(test_dl):
