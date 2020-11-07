@@ -69,8 +69,8 @@ def loading_data():
     
     i = 1836
     #Testing
-    print("Length of Training Dataset: {}".format(len(train_ds)))
-    print("Length of Test Dataset: {}".format(len(test_ds)))
+    #print("Length of Training Dataset: {}".format(len(train_ds)))
+    #print("Length of Test Dataset: {}".format(len(test_ds)))
     print("Shape of images as tensors: {}".format(dataset[i]['image'].shape))
     print("Label of image i: {}".format(dataset[i]['label']))
     
