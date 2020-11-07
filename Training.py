@@ -89,40 +89,53 @@ def train_val(device, epochs, model, opt, loss_func, train_dl, test_dl):
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 #Helper function to compute the loss and metric values for a dataset
-'''def loss_epoch(device, model, loss_func, dataset_dl, opt1 = None, opt2 = None):
-  loss = 0.0
-  metric = 0.0
+def loss_epoch2(device1, device2, model1, model2, loss_func, dataset_dl, opt1 = None, opt2 = None):
+  loss1 = 0.0
+  loss2 = 0.0
+  metric1 = 0.0
+  metric2 = 0.0
   len_data = len(dataset_dl.dataset)
   for i, data in enumerate(dataset_dl, 0):
     #print('batch: ', i)
     xb, yb = data['image'], data['label']
-    xb = xb.type(torch.double).to(device, dtype = torch.float32)
-    yb = yb.to(device, dtype = torch.long)
+    xb2, yb2 = xb.clone(), yb.clone()
+    xb = xb.type(torch.double).to(device1, dtype = torch.float32)
+    yb = yb.to(device1, dtype = torch.long)
+    xb2 = xb2.type(torch.double).to(device2, dtype = torch.float32)
+    yb2 = yb2.to(device2, dtype = torch.long)
     
     #Obtain model output
-    yb_h = model(xb)
+    yb_h = model1(xb)
+    yb_h2 = model2(xb2)
 
-    loss_b, metric_b = loss_batch(loss_func, xb, yb, yb_h, opt)
+    loss_b, metric_b = loss_batch(loss_func, xb, yb, yb_h, opt1)
+    loss_b2, metric_b2 = loss_batch(loss_func, xb2, yb2, yb_h2, opt2)
     #metric_b = loss_batch(loss_func, xb, yb, yb_h, opt)
-    loss += loss_b
+    loss1 += loss_b
+    loss2 += loss_b2
     if metric_b is not None:
-      metric += metric_b
+      metric1 += metric_b
+    if metric_b is not None:
+      metric2 += metric_b2
   
-  loss /= len_data
-  metric /= len_data
+  loss1 /= len_data
+  loss2 /= len_data
+  metric1 /= len_data
+  metric2 /= len_data
 
-  return loss, metric'''
+  return loss1, metric1, loss2, metric2
+
 #Define the training function
 def train_val2(epochs, model1, model2, loss_func, train_dl, test_dl):
   lr = 1e-4
   #Reading GPU
-  #device1 = torch.device("cuda:0")
-  #device2 = torch.device("cuda:1")
-  #model1.to(device1)
-  #model2.to(device2)
+  device1 = torch.device("cuda:0")
+  device2 = torch.device("cuda:1")
+  model1.to(device1)
+  model2.to(device2)
   
-  #opt1 = optim.Adam(model1.parameters(), lr = lr)
-  #opt2 = optim.Adam(model2.parameters(), lr = lr)
+  opt1 = optim.Adam(model1.parameters(), lr = lr)
+  opt2 = optim.Adam(model2.parameters(), lr = lr)
   
   for epoch in range(epochs):
     #print(epoch)
