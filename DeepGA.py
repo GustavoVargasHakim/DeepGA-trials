@@ -48,7 +48,7 @@ num_epochs = 10
 #Reading GPU
 if torch.cuda.is_available():
     device = torch.device("cuda:0")
-    print(decive)
+    print(device)
 
 '''Evaluating the objective function of an encoding (accuracy + w*No. Params)'''
 def evaluate_individual(x):
