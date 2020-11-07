@@ -6,7 +6,7 @@ Created on Thu Oct 29 10:43:11 2020
 """
 
 import torch
-#from torch import nn
+from torch import nn
 
 #Helper function to compute de loss on a batch
 def loss_batch(loss_func, xb, yb, yb_h, opt = None):
@@ -58,7 +58,15 @@ def loss_epoch(device, model, loss_func, dataset_dl, opt = None):
   #return metric
 
 #Define the training function
-def train_val(device, epochs, model, loss_func, opt, train_dl, test_dl):
+def train_val(epochs, model, loss_func, opt, train_dl, test_dl):
+  #Reading GPU
+  if torch.cuda.is_available():
+    device = torch.device("cuda:0")
+    print(device)
+ 
+  model = nn.DataParallel(model)
+  model.to(device)
+  
   for epoch in range(epochs):
     #print(epoch)
     model.train()
