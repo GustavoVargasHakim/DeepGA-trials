@@ -58,14 +58,17 @@ def loss_epoch(device, model, loss_func, dataset_dl, opt = None):
   #return metric
 
 #Define the training function
-def train_val(epochs, model, loss_func, opt, train_dl, test_dl):
+def train_val(epochs, model, loss_func, train_dl, test_dl):
+    lr = 1e-4
   #Reading GPU
   if torch.cuda.is_available():
     device = torch.device("cuda:0")
     print(device)
- 
-  model = nn.DataParallel(model, device_ids = [0,1])
-  #model.to(device)
+  if torch.cude.device_count() > 1:
+      model = nn.DataParallel(model)
+  model.to(device)
+  
+  opt = optim.Adam(cnn.parameters(), lr = lr)
   
   for epoch in range(epochs):
     #print(epoch)
