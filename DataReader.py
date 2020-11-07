@@ -14,9 +14,9 @@ n_labels = np.zeros(918, dtype = np.int8) #Normal
 p_labels = np.full((918,), 2) #Pneumonia
 
 #Images path
-c_root = 'Images/COVID-19/covidp'
-n_root = 'Images/Normal/normalp'
-p_root = 'Images/Pneumonia/pneumoniap'
+c_root = '/home/proy_ext_adolfo.vargas/DeepGA/Images/COVID-19/covidp'
+n_root = '/home/proy_ext_adolfo.vargas/DeepGA/Images/Normal/normalp'
+p_root = '/home/proy_ext_adolfo.vargas/DeepGA/Images/Pneumonia/pneumoniap'
 
 class CovidDataset(Dataset):
   def __init__(self, root, labels, transform = None):
