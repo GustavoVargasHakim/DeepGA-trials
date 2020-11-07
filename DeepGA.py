@@ -108,6 +108,7 @@ def evaluate_individual(x):
     return f, accuracy
     
 '''Initialize population'''
+print('Initialize population')
 start = timeit.default_timer()
 pop = []
 bestAcc = []
