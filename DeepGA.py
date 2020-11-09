@@ -155,7 +155,7 @@ for t in range(T):
         if random.uniform(0,1) >= cr: #Crossover
             p1 = par[0]
             p2 = par[1]
-            c1, c2 = crossover(p1, p2)
+            c1, c2 = crossover(p1[0], p2[0])
             
             #Mutation
             if random.uniform(0,1) >= mr:
