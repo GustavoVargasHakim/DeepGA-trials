@@ -21,7 +21,7 @@ from multiprocessing import Process, Manager
 
 
 '''Loading data'''
-def loading_data():
+'''def loading_data():
     #Loading Datasets
     covid_ds = CovidDataset(root = c_root, labels = c_labels, transform = transforms.Compose([ToTensor()]))
     normal_ds = CovidDataset(root = n_root, labels = n_labels, transform = transforms.Compose([ToTensor()]))
@@ -34,16 +34,16 @@ def loading_data():
     
     i = 1836
     #Testing
-    print("Length of Training Dataset: {}".format(len(train_ds)))
-    print("Length of Test Dataset: {}".format(len(test_ds)))
-    print("Shape of images as tensors: {}".format(dataset[i]['image'].shape))
-    print("Label of image i: {}".format(dataset[i]['label']))
+    #print("Length of Training Dataset: {}".format(len(train_ds)))
+    #print("Length of Test Dataset: {}".format(len(test_ds)))
+    #print("Shape of images as tensors: {}".format(dataset[i]['image'].shape))
+    #print("Label of image i: {}".format(dataset[i]['label']))
     
     #Creating Dataloaders
     train_dl = DataLoader(train_ds, batch_size = 24, shuffle = True)
     test_dl = DataLoader(test_ds, batch_size = 24, shuffle = True)
     
-    return train_dl, test_dl
+    return train_dl, test_dl'''
 
 train_dl, test_dl = loading_data()
 
@@ -77,7 +77,7 @@ T = 50 #Number of generations
 t_size = 5 #tournament size
 w = 0.3 #penalization weight
 max_params = 1.5e6
-num_epochs = 10
+num_epochs = 8
 
 
 #print('GPUs: ', torch.cuda.device_count())
@@ -190,23 +190,35 @@ while len(pop) < N:
 stop = timeit.default_timer()
 execution_time = stop-start
 print('Training time of 4 Networks: ', execution_time)
+for p in pop:
+    print('Accuracy: ', p[2])
 '''Genetic Algorithm'''
 '''for t in range(T):
     print('Generation: ', t)
     
-    offspring = []
-    while len(offspring) < int(N/2):
-        #Parents selection through tournament 
+    #Parents Selection
+    parents = []
+    while len(parents) < int(N/2):
+        #Tournament Selection
         tournament = random.sample(pop, t_size)
         p1 = selection(tournament, 'max')
         tournament = random.sample(pop, t_size)
         p2 = selection(tournament, 'max')
         while p1 == p2:
             tournament = random.sample(pop, t_size)
-            p2 = selection(tournament, 'max')
+            p2 = selection(tournament, 'max')  
         
+        parents.append(p1)
+        parents.append(p2)
+    
+    #Reproduction
+    offspring = []
+    while len(offspring) < int(N/2):
+        par = random.sample(parents, 2)
         #Crossover + Mutation
         if random.uniform(0,1) >= cr: #Crossover
+            p1 = par[0]
+            p2 = par[1]
             c1, c2 = crossover(p1, p2)
             
             #Mutation
