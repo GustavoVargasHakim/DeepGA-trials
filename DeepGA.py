@@ -19,39 +19,12 @@ import torch
 from torch import nn
 from multiprocessing import Process, Manager
 
+#Random seed
+random.seed(0)
+torch.manual_seed(0)
 
-'''Loading data'''
-'''def loading_data():
-    #Loading Datasets
-    covid_ds = CovidDataset(root = c_root, labels = c_labels, transform = transforms.Compose([ToTensor()]))
-    normal_ds = CovidDataset(root = n_root, labels = n_labels, transform = transforms.Compose([ToTensor()]))
-    pneumonia_ds = CovidDataset(root = p_root, labels = p_labels, transform = transforms.Compose([ToTensor()]))
-    
-    #Merging Covid, normal, and pneumonia Datasets
-    dataset = torch.utils.data.ConcatDataset([covid_ds, normal_ds, pneumonia_ds])
-    lengths = [int(len(dataset)*0.7), int(len(dataset)*0.3)+1]
-    train_ds, test_ds = torch.utils.data.random_split(dataset = dataset, lengths = lengths)
-    
-    i = 1836
-    #Testing
-    #print("Length of Training Dataset: {}".format(len(train_ds)))
-    #print("Length of Test Dataset: {}".format(len(test_ds)))
-    #print("Shape of images as tensors: {}".format(dataset[i]['image'].shape))
-    #print("Label of image i: {}".format(dataset[i]['label']))
-    
-    #Creating Dataloaders
-    train_dl = DataLoader(train_ds, batch_size = 24, shuffle = True)
-    test_dl = DataLoader(test_ds, batch_size = 24, shuffle = True)
-    
-    return train_dl, test_dl'''
-
+#Loading data
 train_dl, test_dl = loading_data()
-
-#Iterate over batches
-#for i_batch, sample_batched in enumerate(test_dl):
-#  print(sample_batched['image'].shape)
-#  print(sample_batched['label'])
-#  break
 
 '''Defining CNN hyperparameters'''
 #Defining loss function
@@ -69,7 +42,7 @@ max_full = 4
 '''Genetic Algorithm Parameters'''
 cr = 0.7 #Crossover rate
 mr = 0.3 #Mutation rate
-N = 4 #Population size
+N = 10 #Population size
 T = 1 #Number of generations
 t_size = 5 #tournament size
 w = 0.3 #penalization weight
@@ -80,7 +53,7 @@ num_epochs = 8
 #print('GPUs: ', torch.cuda.device_count())
 
 '''Evaluating the objective function of an encoding (accuracy + w*No. Params)'''
-def evaluate_individual(x, dev):
+'''def evaluate_individual(x, dev):
     #Decoding the network
     #network = decoding(x)
     
@@ -103,7 +76,7 @@ def evaluate_individual(x, dev):
     #Fitness function
     f = abs(accuracy - w*(1 - abs((max_params - params)/max_params)))
     
-    return f, accuracy
+    return f, accuracy'''
 
 #Reading GPU
 device1 = torch.device("cuda:0")
@@ -248,12 +221,13 @@ for p in pop:
         connections += str(bit)
     final_connections.append(connections)
         
-#final_population = pd.DataFrame(list(zip(final_networks, final_connections)), columns = ['Network Architecture', 'Connections'])
+final_population = pd.DataFrame(list(zip(final_networks, final_connections)), columns = ['Network Architecture', 'Connections'])
 
 '''Saving Results as CSV'''
-#final_population.to_csv('final_population.csv', index = False)
-#results.to_csv('Final_population.csv', index = False)      
-
-    
+final_population.to_csv('final_population.csv', index = False)
+results.to_csv('Final_population.csv', index = False)      
+stop = timeit.default_timer()
+execution_time = stop-start
+print("Execution time: ", execution_time)
     
 
