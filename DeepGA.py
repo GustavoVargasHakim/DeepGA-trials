@@ -42,7 +42,7 @@ max_full = 4
 '''Genetic Algorithm Parameters'''
 cr = 0.7 #Crossover rate
 mr = 0.3 #Mutation rate
-N = 10 #Population size
+N = 8 #Population size
 T = 1 #Number of generations
 t_size = 5 #tournament size
 w = 0.3 #penalization weight
@@ -92,24 +92,19 @@ manager = Manager()
 while len(pop) < N:
     acc_list = manager.list()
     
-    #Creating a genome (genetic encoding)
+    #Creating genomes (genetic encoding)
     e1 = Encoding(min_conv,max_conv,min_full,max_full) 
     e2 = Encoding(min_conv,max_conv,min_full,max_full)
     
-    #Decoding the network
+    #Decoding the networks
     network1 = decoding(e1)
     network2 = decoding(e2)
     
-    #Creating the CNN (and obtaining number of parameters)
+    #Creating the CNNs 
     cnn1 = CNN(e1, network1[0], network1[1], network1[2])
     cnn2 = CNN(e2, network2[0], network2[1], network2[2])
-    
-    #Passing to GPU
-    #cnn1.to(device1, dtype = torch.float32)
-    #cnn2.to(device2, dtype = torch.float32)
        
-    #Evaluate individual
-    #f, accuracy = evaluate_individual2(e1, e2)
+    #Evaluate individuals
     training1 = Process(target = training, args = ('1', device1, cnn1, num_epochs, loss_func, 
                                                   train_dl, test_dl, lr, w, max_params, acc_list))
     
@@ -123,10 +118,10 @@ while len(pop) < N:
     
     if acc_list[0][0] == '1':
         pop.append([e1, acc_list[0][1], acc_list[0][2]])
-        pop.append([e2, acc_list[1][1], acc_list[0][2]])
+        pop.append([e2, acc_list[1][1], acc_list[1][2]])
     else:
         pop.append([e2, acc_list[0][1], acc_list[0][2]])
-        pop.append([e1, acc_list[1][1], acc_list[0][2]])
+        pop.append([e1, acc_list[1][1], acc_list[1][2]])
 
 stop = timeit.default_timer()
 execution_time = stop-start
@@ -169,16 +164,39 @@ for t in range(T):
             if random.uniform(0,1) >= mr:
                 mutation(c2)
             
-            f1, acc1 = evaluate_individual(c1)
-            f2, acc2 = evaluate_individual(c2)
+            #Evaluate offspring
+            acc_list = manager.list()
             
-            offspring.append([c1, f1, acc1])
-            offspring.append([c2, f2, acc2])
-        
+            #Decoding the network
+            network1 = decoding(c1)
+            network2 = decoding(c2)
+    
+            #Creating the CNN 
+            cnn1 = CNN(e1, network1[0], network1[1], network1[2])
+            cnn2 = CNN(e2, network2[0], network2[1], network2[2])
+            
+            #Evaluate individuals
+            training1 = Process(target = training, args = ('1', device1, cnn1, num_epochs, loss_func, 
+                                                  train_dl, test_dl, lr, w, max_params, acc_list))
+    
+            training2 = Process(target = training, args = ('2', device2, cnn2, num_epochs, loss_func, 
+                                                  train_dl, test_dl, lr, w, max_params, acc_list))
+            
+            training1.start()
+            training2.start()
+            training1.join()
+            training2.join()
+            
+            if acc_list[0][0] == '1':
+                offspring.append([c1, acc_list[0][1], acc_list[0][2]])
+                offspring.append([c2, acc_list[1][1], acc_list[1][2]])
+            else:
+                offspring.append([c2, acc_list[0][1], acc_list[0][2]])
+                offspring.append([c1, acc_list[1][1], acc_list[1][2]])
        
     #Replacement with elitism
     pop = pop + offspring
-    pop.sort(key = lambda x: x[1])
+    pop.sort(reverse = True, key = lambda x: x[1])
     pop = pop[:N]
     
     leader = max(pop, key = lambda x: x[1])
