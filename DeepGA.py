@@ -57,9 +57,6 @@ train_dl, test_dl = loading_data()
 #Defining loss function
 loss_func = nn.NLLLoss(reduction = "sum")
 
-#Defining optimizer
-num_epochs = 10
-
 #Defining learning rate
 lr = 1e-4
 
@@ -73,7 +70,7 @@ max_full = 4
 cr = 0.7 #Crossover rate
 mr = 0.3 #Mutation rate
 N = 4 #Population size
-T = 50 #Number of generations
+T = 1 #Number of generations
 t_size = 5 #tournament size
 w = 0.3 #penalization weight
 max_params = 1.5e6
@@ -107,35 +104,6 @@ def evaluate_individual(x, dev):
     f = abs(accuracy - w*(1 - abs((max_params - params)/max_params)))
     
     return f, accuracy
-
-'''Evaluating the objective function of an encoding (accuracy + w*No. Params)'''
-def evaluate_individual2(x, y):
-    #Decoding the network
-    network1 = decoding(x)
-    network2 = decoding(y)
-    
-    #Creating the CNN (and obtaining number of parameters)
-    cnn1 = CNN(x, network1[0], network1[1], network1[2])
-    cnn2 = CNN(y, network2[0], network2[1], network2[2])
-    
-    params1 = sum(p.numel() for p in cnn1.parameters() if p.requires_grad)
-    params2 = sum(p.numel() for p in cnn2.parameters() if p.requires_grad)
-    
-    #Passing the CNN to a GPU 
-    #cnn = nn.DataParallel(cnn) #Uncomment this if more than one GPU is available
-    #cnn.to(device, dtype = torch.float32)
-    
-    #Defining optimizer
-    opt = optim.Adam(cnn.parameters(), lr = lr)
-    
-    #Training the network
-    accuracy1, accuracy2, _, _ = train_val2(num_epochs, cnn1, cnn2, loss_func, train_dl, test_dl)
-    
-    #Fitness function
-    f = abs(accuracy - w*(1 - abs((max_params - params)/max_params)))
-    
-    return f, accuracy
-
 
 #Reading GPU
 device1 = torch.device("cuda:0")
@@ -189,11 +157,11 @@ while len(pop) < N:
 
 stop = timeit.default_timer()
 execution_time = stop-start
-print('Training time of 4 Networks: ', execution_time)
-for p in pop:
-    print('Accuracy: ', p[2])
+#print('Training time of 4 Networks: ', execution_time)
+#for p in pop:
+#    print('Accuracy: ', p[2])
 '''Genetic Algorithm'''
-'''for t in range(T):
+for t in range(T):
     print('Generation: ', t)
     
     #Parents Selection
@@ -278,7 +246,7 @@ for p in pop:
     connections = ''
     for bit in p.second_level:
         connections += str(bit)
-    final_connections.append(connections)'''
+    final_connections.append(connections)
         
 #final_population = pd.DataFrame(list(zip(final_networks, final_connections)), columns = ['Network Architecture', 'Connections'])
 
