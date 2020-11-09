@@ -159,8 +159,10 @@ class CNN(nn.Module):
               pool = nn.MaxPool2d(kernel_size = 2, stride = 1, padding = (1,1))
               x2 = pool(outputs[c])
             if req_size == skip_size + 2:
-              pool = nn.MaxPool2d(kernel_size = 2, stride = 1, padding = (1,1))
-              x2 = pool(outputs[c])
+              #pool = nn.MaxPool2d(kernel_size = 2, stride = 1, padding = (1,1))
+              pad = int((req_size - skip_size)/2)
+              padding = nn.ZeroPad2d(pad)
+              x2 = padding(outputs[c])
             #print('X2: ',x2.shape)
             x = torch.cat((x, x2), axis = 1)
           
