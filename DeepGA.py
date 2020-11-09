@@ -10,12 +10,14 @@ from EncodingClass import *
 from Decoding import *
 from DataReader import *
 from Training import *
+from DistributedTraining import *
 import numpy as np
 from torch import optim
 import pandas as pd
 import timeit
 import torch
 from torch import nn
+from multiprocessing import Process, Manager
 
 
 '''Loading data'''
@@ -145,7 +147,10 @@ start = timeit.default_timer()
 pop = []
 bestAcc = []
 bestF = []
+manager = Manager()
 while len(pop) < N:
+    acc_list = manager.list()
+    
     #Creating a genome (genetic encoding)
     e1 = Encoding(min_conv,max_conv,min_full,max_full) 
     e2 = Encoding(min_conv,max_conv,min_full,max_full)
@@ -159,19 +164,32 @@ while len(pop) < N:
     cnn2 = CNN(e2, network2[0], network2[1], network2[2])
     
     #Passing to GPU
-    cnn1.to(device1, dtype = torch.float32)
-    cnn2.to(device2, dtype = torch.float32)
+    #cnn1.to(device1, dtype = torch.float32)
+    #cnn2.to(device2, dtype = torch.float32)
        
     #Evaluate individual
     #f, accuracy = evaluate_individual2(e1, e2)
-    f1, accuracy1 = evaluate_individual(cnn1, device1)
-    f2, accuracy2 = evaluate_individual(cnn2, device2)
-    pop.append([e1, f1, accuracy1])
-    pop.append([e2, f2, accuracy2])
+    training1 = Process(target = training, args = ('1', device1, cnn1, num_epochs, loss_func, 
+                                                  train_dl, test_dl, lr, w, max_params, acc_list))
+    
+    training2 = Process(target = training, args = ('2', device2, cnn2, num_epochs, loss_func, 
+                                                  train_dl, test_dl, lr, w, max_params, acc_list))
+    
+    training1.start()
+    training2.start()
+    training1.join()
+    training2.join()
+    
+    if acc_list[0][0] == '1':
+        pop.append([e1, acc_list[0][1], acc_list[0][2]])
+        pop.append([e2, acc_list[1][1], acc_list[0][2]])
+    else:
+        pop.append([e2, acc_list[0][1], acc_list[0][2]])
+        pop.append([e1, acc_list[1][1], acc_list[0][2]])
 
 stop = timeit.default_timer()
 execution_time = stop-start
-print('Training time of 5 Networks: ', execution_time)
+print('Training time of 4 Networks: ', execution_time)
 '''Genetic Algorithm'''
 '''for t in range(T):
     print('Generation: ', t)
