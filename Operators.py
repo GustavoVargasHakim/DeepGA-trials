@@ -104,35 +104,38 @@ def crossover(x, y):
     
     '''Second level'''
     if len(xbinary) > len(ybinary):
-        k = random.choice(list(range(1, len(ybinary))))
-        partition = ybinary[k:]
-        nbits = len(partition)
+        if len(ybinary) > 0 :
+            k = random.choice(list(range(1, len(ybinary))))
+            partition = ybinary[k:]
+            nbits = len(partition)
         
-        if random.uniform(0,1) >= 0.5:
-            ybinary[k:] = xbinary[len(xbinary) - nbits:len(xbinary)]
-            xbinary[len(xbinary) - nbits:len(xbinary)] = partition
-        else:
-            ybinary[k:] = xbinary[:nbits]
-            xbinary[:nbits] = partition
+            if random.uniform(0,1) >= 0.5:
+                ybinary[k:] = xbinary[len(xbinary) - nbits:len(xbinary)]
+                xbinary[len(xbinary) - nbits:len(xbinary)] = partition
+            else:
+                ybinary[k:] = xbinary[:nbits]
+                xbinary[:nbits] = partition
     
     if len(ybinary) > len(xbinary):
-        k = random.choice(list(range(len(xbinary))))
-        partition = xbinary[k:]
-        nbits = len(partition)
+        if len(xbinary) > 0 :
+            k = random.choice(list(range(len(xbinary))))
+            partition = xbinary[k:]
+            nbits = len(partition)
+            
+            if random.uniform(0,1) >= 0.5:
+                xbinary[k:] = ybinary[len(ybinary) - nbits:len(ybinary)]
+                ybinary[len(ybinary) - nbits:len(ybinary)] = partition
+            else:
+                xbinary[k:] = ybinary[:nbits]
+                ybinary[:nbits] = partition
         
-        if random.uniform(0,1) >= 0.5:
-            xbinary[k:] = ybinary[len(ybinary) - nbits:len(ybinary)]
-            ybinary[len(ybinary) - nbits:len(ybinary)] = partition
-        else:
-            xbinary[k:] = ybinary[:nbits]
-            ybinary[:nbits] = partition
-    
     if len(xbinary) == len(ybinary):
-        k = random.choice(list(range(len(xbinary))))
-        partition = xbinary[k:]
+        if len(xbinary) > 0 :
+            k = random.choice(list(range(len(xbinary))))
+            partition = xbinary[k:]
         
-        xbinary[k:] = ybinary[k:]
-        ybinary[k:] = partition
+            xbinary[k:] = ybinary[k:]
+            ybinary[k:] = partition
     
     return x, y  
 
