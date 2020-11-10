@@ -49,35 +49,6 @@ w = 0.3 #penalization weight
 max_params = 1.5e6
 num_epochs = 8
 
-
-#print('GPUs: ', torch.cuda.device_count())
-
-'''Evaluating the objective function of an encoding (accuracy + w*No. Params)'''
-'''def evaluate_individual(x, dev):
-    #Decoding the network
-    #network = decoding(x)
-    
-    #Creating the CNN (and obtaining number of parameters)
-    #cnn = CNN(x, network[0], network[1], network[2])
-    #params = sum(p.numel() for p in cnn.parameters() if p.requires_grad)
-    
-    #Passing the CNN to a GPU 
-    #cnn = nn.DataParallel(cnn) #Uncomment this if more than one GPU is available
-    #cnn.to(device, dtype = torch.float32)
-    
-    #Defining optimizer
-    opt = optim.Adam(x.parameters(), lr = lr)
-    
-    #Training the network
-    accuracy, _ = train_val(dev, num_epochs, x, opt, loss_func, train_dl, test_dl)
-    
-    params = sum(p.numel() for p in x.parameters() if p.requires_grad)
-    
-    #Fitness function
-    f = abs(accuracy - w*(1 - abs((max_params - params)/max_params)))
-    
-    return f, accuracy'''
-
 #Reading GPU
 device1 = torch.device("cuda:0")
 device2 = torch.device("cuda:1")
@@ -124,7 +95,7 @@ while len(pop) < N:
         pop.append([e1, acc_list[1][1], acc_list[1][2]])
 
 stop = timeit.default_timer()
-execution_time = stop-start
+#execution_time = stop-start
 #print('Training time of 4 Networks: ', execution_time)
 #for p in pop:
 #    print('Accuracy: ', p[2])
