@@ -94,7 +94,7 @@ while len(pop) < N:
         pop.append([e2, acc_list[0][1], acc_list[0][2]])
         pop.append([e1, acc_list[1][1], acc_list[1][2]])
 
-stop = timeit.default_timer()
+#stop = timeit.default_timer()
 #execution_time = stop-start
 #print('Training time of 4 Networks: ', execution_time)
 #for p in pop:
@@ -143,8 +143,8 @@ for t in range(T):
             network2 = decoding(c2)
     
             #Creating the CNN 
-            cnn1 = CNN(e1, network1[0], network1[1], network1[2])
-            cnn2 = CNN(e2, network2[0], network2[1], network2[2])
+            cnn1 = CNN(c1, network1[0], network1[1], network1[2])
+            cnn2 = CNN(c2, network2[0], network2[1], network2[2])
             
             #Evaluate individuals
             training1 = Process(target = training, args = ('1', device1, cnn1, num_epochs, loss_func, 
