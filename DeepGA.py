@@ -152,16 +152,16 @@ for t in range(T):
     while len(offspring) < int(N/2):
         par = random.sample(parents, 2)
         #Crossover + Mutation
-        if random.uniform(0,1) >= cr: #Crossover
+        if cr >= random.uniform(0,1): #Crossover
             p1 = par[0]
             p2 = par[1]
             c1, c2 = crossover(p1[0], p2[0])
             
             #Mutation
-            if random.uniform(0,1) >= mr:
+            if mr >= random.uniform(0,1):
                 mutation(c1)
             
-            if random.uniform(0,1) >= mr:
+            if mr >= random.uniform(0,1):
                 mutation(c2)
             
             #Evaluate offspring
