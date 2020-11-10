@@ -153,9 +153,9 @@ for t in range(T):
         par = random.sample(parents, 2)
         #Crossover + Mutation
         if cr >= random.uniform(0,1): #Crossover
-            p1 = par[0]
-            p2 = par[1]
-            c1, c2 = crossover(p1[0], p2[0])
+            p1 = par[0][0]
+            p2 = par[1][0]
+            c1, c2 = crossover(p1, p2)
             
             #Mutation
             if mr >= random.uniform(0,1):
