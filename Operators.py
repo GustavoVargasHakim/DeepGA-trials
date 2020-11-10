@@ -222,12 +222,13 @@ def mutation(x):
             x.first_level[ix] = new_layer
         
         '''Modifying connections in second level'''
-        k = random.choice(list(range(len(x.second_level))))
-        #Flipping one bit in the second level
-        if x.second_level[k] == 1:
-            x.second_level[k] = 0
-        else:
-            x.second_level[k] = 1
+        if len(x.second_level) > 0:
+            k = random.choice(list(range(len(x.second_level))))
+            #Flipping one bit in the second level
+            if x.second_level[k] == 1:
+                x.second_level[k] = 0
+            else:
+                x.second_level[k] = 1
     
 
 def selection(tournament, style):
