@@ -46,7 +46,7 @@ N = 20 #Population size
 T = 50 #Number of generations
 t_size = 5 #tournament size
 w = 0.3 #penalization weight
-max_params = 1.5e6
+max_params = 2e6
 num_epochs = 8
 
 #Reading GPU
