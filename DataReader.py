@@ -33,7 +33,7 @@ class CovidDataset(Dataset):
     p_root = self.root[:] 
     img_name_p = p_root + str(idx+1) + '.png'
     #image_p = cv2.imread(img_name_p, 0)
-    image_p = np.asarray(Image.open(img_name_p))
+    image_p = np.array(Image.open(img_name_p))
     [H, W] = image_p.shape
     image_p = image_p.reshape((H,W,1))
     p_label = self.labels[idx]
