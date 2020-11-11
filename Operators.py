@@ -104,7 +104,7 @@ def crossover(x, y):
     
     '''Second level'''
     if len(xbinary) > len(ybinary):
-        if len(ybinary) > 0 :
+        if len(ybinary) > 1 :
             k = random.choice(list(range(1, len(ybinary))))
             partition = ybinary[k:]
             nbits = len(partition)
@@ -117,7 +117,7 @@ def crossover(x, y):
                 xbinary[:nbits] = partition
     
     if len(ybinary) > len(xbinary):
-        if len(xbinary) > 0 :
+        if len(xbinary) > 1 :
             k = random.choice(list(range(len(xbinary))))
             partition = xbinary[k:]
             nbits = len(partition)
@@ -130,7 +130,7 @@ def crossover(x, y):
                 ybinary[:nbits] = partition
         
     if len(xbinary) == len(ybinary):
-        if len(xbinary) > 0 :
+        if len(xbinary) > 1 :
             k = random.choice(list(range(len(xbinary))))
             partition = xbinary[k:]
         
