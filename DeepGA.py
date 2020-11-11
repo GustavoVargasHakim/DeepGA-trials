@@ -43,7 +43,7 @@ max_full = 4
 cr = 0.7 #Crossover rate
 mr = 0.3 #Mutation rate
 N = 20 #Population size
-T = 50 #Number of generations
+T = 2 #Number of generations
 t_size = 5 #tournament size
 w = 0.2 #penalization weight
 max_params = 2e6
@@ -94,11 +94,6 @@ while len(pop) < N:
         pop.append([e2, acc_list[0][1], acc_list[0][2]])
         pop.append([e1, acc_list[1][1], acc_list[1][2]])
 
-#stop = timeit.default_timer()
-#execution_time = stop-start
-#print('Training time of 4 Networks: ', execution_time)
-#for p in pop:
-#    print('Accuracy: ', p[2])
 '''Genetic Algorithm'''
 for t in range(T):
     print('Generation: ', t)
