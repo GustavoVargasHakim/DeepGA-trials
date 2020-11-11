@@ -42,8 +42,8 @@ max_full = 4
 '''Genetic Algorithm Parameters'''
 cr = 0.7 #Crossover rate
 mr = 0.3 #Mutation rate
-N = 8 #Population size
-T = 1 #Number of generations
+N = 20 #Population size
+T = 50 #Number of generations
 t_size = 5 #tournament size
 w = 0.3 #penalization weight
 max_params = 1.5e6
@@ -213,8 +213,10 @@ for p in pop:
 final_population = pd.DataFrame(list(zip(final_networks, final_connections)), columns = ['Network Architecture', 'Connections'])
 
 '''Saving Results as CSV'''
+final_population.to_csv('/home/proy_ext_adolfo.vargas/DeepGA/final_population.csv', index = False)
 final_population.to_csv('final_population.csv', index = False)
-results.to_csv('Final_population.csv', index = False)      
+results.to_csv('/home/proy_ext_adolfo.vargas/DeepGA/results.csv', index = False)
+results.to_csv('results.csv', index = False)      
 stop = timeit.default_timer()
 execution_time = stop-start
 print("Execution time: ", execution_time)
