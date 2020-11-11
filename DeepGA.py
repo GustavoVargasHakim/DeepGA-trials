@@ -179,8 +179,6 @@ for t in range(T):
     print('--------------------------------------------')
 
 results = pd.DataFrame(list(zip(bestAcc, bestF)), columns = ['Accuracy', 'Fitness'])
-pop = []
-pop.append(Encoding(min_conv,max_conv,min_full,max_full))
 final_networks = []
 final_connections = []
 for p in pop:
