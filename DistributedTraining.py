@@ -77,20 +77,20 @@ def train_val(device, epochs, model, opt, loss_func, train_dl, test_dl):
   return accuracy, model
 
 def training(num, device, model, n_epochs, loss_func, train_dl, test_dl, lr, w, max_params, acc_list):
+    #Number of parameters
+    params = sum(p.numel() for p in model.parameters() if p.requires_grad)
+    
     model.to(device)
     
     #Optimizer
     opt = optim.Adam(model.parameters(), lr = lr)
-    
-    #Number of parameters
-    params = sum(p.numel() for p in model.parameters() if p.requires_grad)
     
     #Obtaining training accuracy
     accuracy, _ = train_val(device, n_epochs, model, opt, loss_func, train_dl, test_dl)
     
     #Fitness function based on accuracy and No. of parameters
     #f = abs(accuracy - w*(1 - abs((max_params - params)/max_params)))
-    f = (1 - w)*accuracy - w*((max_params - params)/max_params)
+    f = (1 - w)*accuracy - abs(w*((max_params - params)/max_params))
     
     #Append results to multiprocessing list
     acc_list.append([num, f, accuracy])
