@@ -70,7 +70,7 @@ def train_val(device, epochs, model, opt, loss_func, train_dl, test_dl):
     with torch.no_grad():
       val_loss, val_metric = loss_epoch(device, model, loss_func, test_dl)
       #val_metric = loss_epoch(model, loss_func, test_dl)
-    accuracy = 100*val_metric
+    accuracy = val_metric
 
     #print("Epoch: %d, train loss: %.6f, val loss: %.6f, test accuracy: %.2f" %(epoch, train_loss, val_loss, accuracy))
   
@@ -89,7 +89,8 @@ def training(num, device, model, n_epochs, loss_func, train_dl, test_dl, lr, w, 
     accuracy, _ = train_val(device, n_epochs, model, opt, loss_func, train_dl, test_dl)
     
     #Fitness function based on accuracy and No. of parameters
-    f = abs(accuracy - w*(100 - abs((max_params - params)*100/max_params)))
+    #f = abs(accuracy - w*(1 - abs((max_params - params)/max_params)))
+    f = (1 - w)*accuracy - w*((max_params - params)/max_params)
     
     #Append results to multiprocessing list
     acc_list.append([num, f, accuracy])
