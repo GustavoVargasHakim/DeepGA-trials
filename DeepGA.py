@@ -216,7 +216,7 @@ final_population.to_csv('final_population.csv', index = False)
 results.to_csv('/home/proy_ext_adolfo.vargas/DeepGA/results.csv', index = False)
 results.to_csv('results.csv', index = False)      
 stop = timeit.default_timer()
-execution_time = stop-start
+execution_time = (stop-start)/3600
 print("Execution time: ", execution_time)
     
 
