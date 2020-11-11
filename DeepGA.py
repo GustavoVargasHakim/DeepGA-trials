@@ -59,6 +59,7 @@ start = timeit.default_timer()
 pop = []
 bestAcc = []
 bestF = []
+bestParams = []
 manager = Manager()
 while len(pop) < N:
     acc_list = manager.list()
@@ -88,11 +89,11 @@ while len(pop) < N:
     training2.join()
     
     if acc_list[0][0] == '1':
-        pop.append([e1, acc_list[0][1], acc_list[0][2]])
-        pop.append([e2, acc_list[1][1], acc_list[1][2]])
+        pop.append([e1, acc_list[0][1], acc_list[0][2], acc_list[0][3]])
+        pop.append([e2, acc_list[1][1], acc_list[1][2], acc_list[1][3]])
     else:
-        pop.append([e2, acc_list[0][1], acc_list[0][2]])
-        pop.append([e1, acc_list[1][1], acc_list[1][2]])
+        pop.append([e2, acc_list[0][1], acc_list[0][2], acc_list[0][3]])
+        pop.append([e1, acc_list[1][1], acc_list[1][2], acc_list[1][3]])
 
 '''Genetic Algorithm'''
 for t in range(T):
@@ -154,11 +155,11 @@ for t in range(T):
             training2.join()
             
             if acc_list[0][0] == '1':
-                offspring.append([c1, acc_list[0][1], acc_list[0][2]])
-                offspring.append([c2, acc_list[1][1], acc_list[1][2]])
+                offspring.append([c1, acc_list[0][1], acc_list[0][2], acc_list[0][3]])
+                offspring.append([c2, acc_list[1][1], acc_list[1][2], acc_list[1][3]])
             else:
-                offspring.append([c2, acc_list[0][1], acc_list[0][2]])
-                offspring.append([c1, acc_list[1][1], acc_list[1][2]])
+                offspring.append([c2, acc_list[0][1], acc_list[0][2], acc_list[0][3]])
+                offspring.append([c1, acc_list[1][1], acc_list[1][2], acc_list[1][3]])
        
     #Replacement with elitism
     pop = pop + offspring
@@ -168,15 +169,18 @@ for t in range(T):
     leader = max(pop, key = lambda x: x[1])
     bestAcc.append(leader[2])
     bestF.append(leader[1])
+    bestParams.append(leader[3])
         
     print('Best fitness: ', leader[1])
     print('Best accuracy: ', leader[2])
+    print('Best No. of Params: ', leader[3])
     print('--------------------------------------------')
 
-results = pd.DataFrame(list(zip(bestAcc, bestF)), columns = ['Accuracy', 'Fitness'])
+results = pd.DataFrame(list(zip(bestAcc, bestF, bestParams)), columns = ['Accuracy', 'Fitness', 'No. Params'])
 final_networks = []
 final_connections = []
-for p in pop:
+for member in pop:
+    p = member[0]
     n_conv = p.n_conv
     n_full = p.n_full
     description = 'The network has ' + str(n_conv) + ' convolutional layers ' + 'with: '
