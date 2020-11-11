@@ -71,7 +71,7 @@ def crossover(x, y):
         index = list(range(x_nconv, x_nconv + x_nfull))
         
         '''Exchanging the last k blocks of the smaller parent'''
-        for i in range(y_nconv + k, y_nfull + y_nfull):
+        for i in range(y_nconv + k, y_nconv + y_nfull):
             block = yblocks[i] #ith block
             ix = random.choice(index) #Selecting random index from larger parent
             index.remove(ix)
@@ -85,7 +85,7 @@ def crossover(x, y):
         index = list(range(y_nconv, y_nconv + y_nfull))
         
         '''Exchanging the last k blocks of the smaller parent'''
-        for i in range(y_nconv + k, y_nfull + y_nfull):
+        for i in range(x_nconv + k, x_nconv + x_nfull):
             block = xblocks[i] #ith block
             ix = random.choice(index) #Selecting random index from larger parent
             index.remove(ix)
