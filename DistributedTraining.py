@@ -93,7 +93,7 @@ def training(num, device, model, n_epochs, loss_func, train_dl, test_dl, lr, w, 
     f = (1 - w)*accuracy - abs(w*((max_params - params)/max_params))
     
     #Append results to multiprocessing list
-    acc_list.append([num, f, accuracy])
+    acc_list.append([num, f, accuracy, params])
         
         
         
