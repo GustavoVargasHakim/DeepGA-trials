@@ -140,7 +140,7 @@ def crossover(x, y):
     return x, y  
 
 def mutation(x):
-    if random.uniform(0,1) < 0.2:
+    if random.uniform(0,1) < 0.3:
         '''Adding a new block'''
         if random.uniform(0,1) > 0.5:
             #Adding a fully-connected block
