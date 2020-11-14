@@ -18,6 +18,7 @@ import timeit
 import torch
 from torch import nn
 from multiprocessing import Process, Manager
+import pickle
 
 #Random seed
 random.seed(1)
@@ -179,8 +180,10 @@ for t in range(T):
 results = pd.DataFrame(list(zip(bestAcc, bestF, bestParams)), columns = ['Accuracy', 'Fitness', 'No. Params'])
 final_networks = []
 final_connections = []
+objects = []
 for member in pop:
     p = member[0]
+    objects.append(p)
     n_conv = p.n_conv
     n_full = p.n_full
     description = 'The network has ' + str(n_conv) + ' convolutional layers ' + 'with: '
@@ -204,9 +207,17 @@ for member in pop:
     
     connections = ''
     for bit in p.second_level:
-        connections += str(bit)
+        if bit == 1:
+            connections += 'one - '
+        if bit == 0:
+            connections += 'zero - '
     final_connections.append(connections)
-        
+
+#Saving objects
+with open('cnns.pkl', 'wb') as output:
+    pickle.dump(objects, output, pickle.HIGHEST_PROTOCOL)
+    output.close()
+     
 final_population = pd.DataFrame(list(zip(final_networks, final_connections)), columns = ['Network Architecture', 'Connections'])
 
 '''Saving Results as CSV'''
