@@ -213,10 +213,6 @@ for member in pop:
             connections += 'zero - '
     final_connections.append(connections)
 
-#Saving objects
-with open('cnns.pkl', 'wb') as output:
-    pickle.dump(objects, output, pickle.HIGHEST_PROTOCOL)
-    output.close()
      
 final_population = pd.DataFrame(list(zip(final_networks, final_connections)), columns = ['Network Architecture', 'Connections'])
 
@@ -228,5 +224,10 @@ results.to_csv('results.csv', index = False)
 stop = timeit.default_timer()
 execution_time = (stop-start)/3600
 print("Execution time: ", execution_time)
+
+#Saving objects
+with open('cnns.pkl', 'wb') as output:
+    pickle.dump(objects, output, pickle.HIGHEST_PROTOCOL)
+    output.close()
     
 
