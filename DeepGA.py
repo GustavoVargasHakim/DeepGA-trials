@@ -46,9 +46,9 @@ mr = 0.5 #Mutation rate
 N = 20 #Population size
 T = 50 #Number of generations
 t_size = 5 #tournament size
-w = 0.2 #penalization weight
+w = 0.3 #penalization weight
 max_params = 2e6
-num_epochs = 8
+num_epochs = 10
 
 #Reading GPU
 device1 = torch.device("cuda:0")
