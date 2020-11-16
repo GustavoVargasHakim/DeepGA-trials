@@ -36,7 +36,7 @@ lr = 1e-4
 
 #Maximun and minimum numbers of layers to initialize networks
 min_conv = 2
-max_conv = 6
+max_conv = 5
 min_full = 1
 max_full = 4
 
