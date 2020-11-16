@@ -171,10 +171,13 @@ for t in range(T):
     bestAcc.append(leader[2])
     bestF.append(leader[1])
     bestParams.append(leader[3])
+    
         
     print('Best fitness: ', leader[1])
     print('Best accuracy: ', leader[2])
     print('Best No. of Params: ', leader[3])
+    print('No. of Conv. Layers: ', leader[0].n_conv)
+    print('No. of FC Layers: ', leader[0].n_full)
     print('--------------------------------------------')
 
 results = pd.DataFrame(list(zip(bestAcc, bestF, bestParams)), columns = ['Accuracy', 'Fitness', 'No. Params'])
