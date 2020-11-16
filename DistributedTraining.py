@@ -90,7 +90,10 @@ def training(num, device, model, n_epochs, loss_func, train_dl, test_dl, lr, w, 
     
     #Fitness function based on accuracy and No. of parameters
     #f = abs(accuracy - w*(1 - abs((max_params - params)/max_params)))
-    f = (1 - w)*accuracy + abs(w*((max_params - params)/max_params))
+    if params < max_params:
+        f = (1 - w)*accuracy + abs(w*((max_params - params)/max_params))
+    else:
+        f = (1 - w)*accuracy - abs(w*((max_params - params)/max_params))
     
     #Append results to multiprocessing list
     acc_list.append([num, f, accuracy, params])
