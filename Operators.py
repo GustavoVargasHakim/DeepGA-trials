@@ -142,7 +142,7 @@ def crossover(x, y):
 def mutation(x):
     if random.uniform(0,1) < 0.5:
         '''Adding a new block'''
-        if random.uniform(0,1) > 0.5:
+        if random.uniform(0,1) > 0.3:
             #Adding a fully-connected block
             layer = {'type' : 'fc',
                      'neurons' : random.choice(NEURONS)}
