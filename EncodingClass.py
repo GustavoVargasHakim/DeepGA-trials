@@ -8,7 +8,7 @@ import random
 
 '''Hyperparameters configuration'''
 #Convolutional layers
-FSIZES = [2,3,4,5,6,7,8,9]
+FSIZES = [2,3,4,5,6,7,8]
 NFILTERS = [2,4,8,16,32]
 
 #Pooling layers
