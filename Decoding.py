@@ -32,9 +32,13 @@ def decoding(encoding):
     layer = first_level[i]
     n_filters = layer['nfilters']
     f_size = layer['fsize']
+    pad = 1
+    if f_size > out_size:
+        f_size = 1
+        pad = 0
     if i == 0 or i == 1:
       if layer['pool'] == 'off':
-        operation = [nn.Conv2d(in_channels = in_channels, out_channels = n_filters, kernel_size = f_size, padding = 1),
+        operation = [nn.Conv2d(in_channels = in_channels, out_channels = n_filters, kernel_size = f_size, padding = pad),
                     nn.BatchNorm2d(n_filters),
                     nn.ReLU(inplace = True)]
         in_channels = n_filters
@@ -45,7 +49,7 @@ def decoding(encoding):
           p_size = layer['psize']
           if p_size > out_size:
               p_size = out_size - 1
-          operation = [nn.Conv2d(in_channels = in_channels, out_channels = n_filters, kernel_size = f_size, padding = 1),
+          operation = [nn.Conv2d(in_channels = in_channels, out_channels = n_filters, kernel_size = f_size, padding = pad),
                       nn.BatchNorm2d(n_filters),
                       nn.ReLU(inplace = True), 
                       nn.AvgPool2d(kernel_size = p_size, stride = 2)]
@@ -58,7 +62,7 @@ def decoding(encoding):
           p_size = layer['psize']
           if p_size > out_size:
               p_size = out_size - 1
-          operation = [nn.Conv2d(in_channels = in_channels, out_channels = n_filters, kernel_size = f_size, padding = 1),
+          operation = [nn.Conv2d(in_channels = in_channels, out_channels = n_filters, kernel_size = f_size, padding = pad),
                       nn.BatchNorm2d(n_filters),
                       nn.ReLU(inplace = True), 
                       nn.MaxPool2d(kernel_size = p_size, stride = 2)]
@@ -73,7 +77,7 @@ def decoding(encoding):
           in_channels += o_sizes[c][1]  
 
       if layer['pool'] == 'off':
-        operation = [nn.Conv2d(in_channels = in_channels, out_channels = n_filters, kernel_size = f_size, padding = 1),
+        operation = [nn.Conv2d(in_channels = in_channels, out_channels = n_filters, kernel_size = f_size, padding = pad),
                     nn.BatchNorm2d(n_filters),
                     nn.ReLU(inplace = True)]
         in_channels = n_filters
@@ -84,7 +88,7 @@ def decoding(encoding):
           p_size = layer['psize']
           if p_size > out_size:
               p_size = out_size - 1
-          operation = [nn.Conv2d(in_channels = in_channels, out_channels = n_filters, kernel_size = f_size, padding = 1),
+          operation = [nn.Conv2d(in_channels = in_channels, out_channels = n_filters, kernel_size = f_size, padding = pad),
                       nn.BatchNorm2d(n_filters),
                       nn.ReLU(inplace = True), 
                       nn.AvgPool2d(kernel_size = p_size, stride = 2)]
@@ -97,7 +101,7 @@ def decoding(encoding):
           p_size = layer['psize']
           if p_size > out_size:
               p_size = out_size - 1
-          operation = [nn.Conv2d(in_channels = in_channels, out_channels = n_filters, kernel_size = f_size, padding = 1),
+          operation = [nn.Conv2d(in_channels = in_channels, out_channels = n_filters, kernel_size = f_size, padding = pad),
                       nn.BatchNorm2d(n_filters),
                       nn.ReLU(inplace = True), 
                       nn.MaxPool2d(kernel_size = p_size, stride = 2)]
