@@ -21,8 +21,8 @@ from multiprocessing import Process, Manager
 import pickle
 
 #Random seed
-random.seed(1)
-torch.manual_seed(1)
+random.seed(2)
+torch.manual_seed(2)
 
 #Loading data
 train_dl, test_dl = loading_data()
@@ -46,7 +46,7 @@ mr = 0.5 #Mutation rate
 N = 20 #Population size
 T = 50 #Number of generations
 t_size = 5 #tournament size
-w = 0.3 #penalization weight
+w = 0.2 #penalization weight
 max_params = 2e6
 num_epochs = 10
 
@@ -229,6 +229,10 @@ execution_time = (stop-start)/3600
 print("Execution time: ", execution_time)
 
 #Saving objects
+with open('/home/proy_ext_adolfo.vargas/cnns.pkl', 'wb') as output:
+    pickle.dump(objects, output, pickle.HIGHEST_PROTOCOL)
+    output.close()
+
 with open('cnns.pkl', 'wb') as output:
     pickle.dump(objects, output, pickle.HIGHEST_PROTOCOL)
     output.close()
