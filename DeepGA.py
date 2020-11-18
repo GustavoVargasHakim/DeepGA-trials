@@ -21,8 +21,8 @@ from multiprocessing import Process, Manager
 import pickle
 
 #Random seed
-random.seed(2)
-torch.manual_seed(2)
+random.seed(1)
+torch.manual_seed(1)
 
 #Loading data
 train_dl, test_dl = loading_data()
