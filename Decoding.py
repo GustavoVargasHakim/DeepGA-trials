@@ -33,9 +33,8 @@ def decoding(encoding):
     n_filters = layer['nfilters']
     f_size = layer['fsize']
     pad = 1
-    '''if f_size > out_size:
-        f_size = 1
-        pad = 0'''
+    if f_size > out_size:
+        f_size = out_size - 1
     if i == 0 or i == 1:
       if layer['pool'] == 'off':
         operation = [nn.Conv2d(in_channels = in_channels, out_channels = n_filters, kernel_size = f_size, padding = pad),
