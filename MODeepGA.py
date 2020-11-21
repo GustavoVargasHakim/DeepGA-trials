@@ -70,8 +70,8 @@ def dominance_sorting(Pop):
                 
 
 #Random seed
-random.seed(2)
-torch.manual_seed(2)
+random.seed(1)
+torch.manual_seed(1)
 
 #Loading data
 train_dl, test_dl = loading_data()
@@ -93,7 +93,7 @@ max_full = 4
 cr = 0.7 #Crossover rate
 mr = 0.5 #Mutation rate
 N = 20 #Population size
-T = 50 #Number of generations
+T = 25 #Number of generations
 t_size = 5 #tournament size
 w = 0.3 #penalization weight
 max_params = 2e6
@@ -217,19 +217,24 @@ for t in range(T):
     pop = pop[:N]
     
     leader = max(pop, key = lambda x: x[1])
-    bestAcc.append(leader[2])
-    bestF.append(leader[1])
-    bestParams.append(leader[3])
+    #bestAcc.append(leader[2])
+    #bestF.append(leader[1])
+    #bestParams.append(leader[3])
     
         
-    '''print('Best fitness: ', leader[1])
-    print('Best accuracy: ', leader[2])
-    print('Best No. of Params: ', leader[3])
+    print('Best accuracy: ', leader[1])
+    print('Best No. of Params: ', leader[2])
     print('No. of Conv. Layers: ', leader[0].n_conv)
     print('No. of FC Layers: ', leader[0].n_full)
-    print('--------------------------------------------')'''
+    print('--------------------------------------------')
 
-results = pd.DataFrame(list(zip(bestAcc, bestF, bestParams)), columns = ['Accuracy', 'Fitness', 'No. Params'])
+accuracy = []
+parameters = []
+for p in pop:
+    accuracy.append(p[1])
+    parameters.append(p[2])
+
+results = pd.DataFrame(list(zip(accuracy, parameters)), columns = ['Accuracy', 'No. Params'])
 final_networks = []
 final_connections = []
 objects = []
