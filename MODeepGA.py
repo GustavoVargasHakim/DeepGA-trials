@@ -47,6 +47,7 @@ def dominance_sorting(Pop):
         Fi = [p]
         for q in [Q for Q in R if Q not in Fi]:
             if len(Fi) == 1:
+                p = Fi[0]
                 if dominates(q, p):
                     p = q
                     Fi[0] = q
@@ -54,10 +55,14 @@ def dominance_sorting(Pop):
                     Fi.append(q)
             else:
                 n = 0
-                for j in range(len(Fi)):
-                    f = Fi[j]
+                Fic = Fi[:]
+                for j in range(len(Fic)):
+                    f = Fic[j]
                     if dominates(q, f):
-                        Fi[j] = q
+                        if q not in Fi:
+                            Fi[j] = q
+                        else:
+                            Fi.remove(f)
                     elif not dominates(f, q) and not dominates(q,f):
                         n += 1
                 if n == len(Fi):
