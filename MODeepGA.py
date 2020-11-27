@@ -56,7 +56,7 @@ def dominance_sorting(Pop):
                 n = 0
                 for j in range(len(Fi)):
                     f = Fi[j]
-                    if dominates2(q, f):
+                    if dominates(q, f):
                         Fi[j] = q
                     elif not dominates(f, q) and not dominates(q,f):
                         n += 1
