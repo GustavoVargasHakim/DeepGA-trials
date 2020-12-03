@@ -83,8 +83,8 @@ while len(pop) < N:
     network2 = decoding(e2)
     
     #Creating the CNNs 
-    cnn1 = CNN(e1, network1[0], network1[1], network1[2])
-    cnn2 = CNN(e2, network2[0], network2[1], network2[2])
+    cnn1 = CNN(network1[0], network1[1])
+    cnn2 = CNN(network2[0], network2[1])
        
     #Evaluate individuals
     training1 = Process(target = training, args = ('1', device1, cnn1, num_epochs, loss_func, 
