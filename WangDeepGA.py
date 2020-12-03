@@ -149,8 +149,8 @@ for t in range(T):
             network2 = decoding(c2)
     
             #Creating the CNN 
-            cnn1 = CNN(c1, network1[0], network1[1], network1[2])
-            cnn2 = CNN(c2, network2[0], network2[1], network2[2])
+            cnn1 = CNN(c1, network1[0], network1[1])
+            cnn2 = CNN(c2, network2[0], network2[1])
             
             #Evaluate individuals
             training1 = Process(target = training, args = ('1', device1, cnn1, num_epochs, loss_func, 
