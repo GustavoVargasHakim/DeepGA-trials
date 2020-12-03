@@ -52,8 +52,8 @@ max_full = 4
 '''Genetic Algorithm Parameters'''
 cr = 0.7 #Crossover rate
 mr = 0.5 #Mutation rate
-N = 20 #Population size
-T = 1 #Number of generations
+N = 10 #Population size
+T = 10 #Number of generations
 t_size = 5 #tournament size
 w = 0.3 #penalization weight
 max_params = 2e6
