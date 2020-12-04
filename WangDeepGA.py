@@ -52,7 +52,7 @@ max_full = 4
 '''Genetic Algorithm Parameters'''
 cr = 0.7 #Crossover rate
 mr = 0.5 #Mutation rate
-N = 10 #Population size
+N = 20 #Population size
 T = 10 #Number of generations
 t_size = 5 #tournament size
 w = 0.3 #penalization weight
@@ -185,57 +185,62 @@ for t in range(T):
     print('Best fitness: ', leader[1])
     print('Best accuracy: ', leader[2])
     print('Best No. of Params: ', leader[3])
-    print('No. of Conv. Layers: ', leader[0].n_conv)
+    print('No. of Conv. Layers: ', leader[0].n_block)
     print('No. of FC Layers: ', leader[0].n_full)
     print('--------------------------------------------')
 
 results = pd.DataFrame(list(zip(bestAcc, bestF, bestParams)), columns = ['Accuracy', 'Fitness', 'No. Params'])
+results.to_csv('/home/proy_ext_adolfo.vargas/DeepGA/results.csv', index = False)
+results.to_csv('results.csv', index = False)
+stop = timeit.default_timer()
+execution_time = (stop-start)/3600
+print("Execution time: ", execution_time)
 final_networks = []
 final_connections = []
 objects = []
 for member in pop:
     p = member[0]
     objects.append(p)
-    n_conv = p.n_conv
+    n_block = p.n_block
     n_full = p.n_full
-    description = 'The network has ' + str(n_conv) + ' convolutional layers ' + 'with: '
-    for i in range(n_conv):
+    connections = '( '
+    description = 'The network has ' + str(n_block) + ' dense blocks ' + 'with: '
+    for i in range(n_block):
         nfilters = str(p.first_level[i]['nfilters'])
-        fsize = str(p.first_level[i]['fsize'])
-        pool = str(p.first_level[i]['pool'])
-        psize = str(p.first_level[i]['psize'])
-        layer = '(' + nfilters + ', ' + fsize + ', ' + pool + ', ' + psize + ') '
+        n_conv = str(p.first_level[i]['nconv'])
+        conn = p.second_level[i]
+        
+        layer = '(' + nfilters + ', ' + n_conv  + ') '
         description += layer
+        
+        
+        block = '[ '
+        for bit in p.second_level[i]:
+            if bit == 1:
+                block += 'one - '  
+            if bit == 0:
+                block += 'zero - '
+        block += ']'
+        connections += block
+    final_connections.append(connections)
     description += 'and '
     description += str(n_full)
     description += ' '
     description += 'fully-connected layers with: '
-    for i in range(n_conv, n_conv+n_full):
+    for i in range(n_block, n_block+n_full):
         neurons = str(p.first_level[i]['neurons'])
         layer = '(' + neurons + ')'
         description += layer
     description += ' neurons'
     final_networks.append(description)
     
-    connections = ''
-    for bit in p.second_level:
-        if bit == 1:
-            connections += 'one - '
-        if bit == 0:
-            connections += 'zero - '
-    final_connections.append(connections)
-
-     
+        
 final_population = pd.DataFrame(list(zip(final_networks, final_connections)), columns = ['Network Architecture', 'Connections'])
 
 '''Saving Results as CSV'''
 final_population.to_csv('/home/proy_ext_adolfo.vargas/DeepGA/final_population.csv', index = False)
-final_population.to_csv('final_population.csv', index = False)
-results.to_csv('/home/proy_ext_adolfo.vargas/DeepGA/results.csv', index = False)
-results.to_csv('results.csv', index = False)      
-stop = timeit.default_timer()
-execution_time = (stop-start)/3600
-print("Execution time: ", execution_time)
+final_population.to_csv('final_population.csv', index = False)    
+
 
 #Saving objects
 with open('/home/proy_ext_adolfo.vargas/cnns.pkl', 'wb') as output:
