@@ -91,7 +91,7 @@ max_full = 4
 cr = 0.7 #Crossover rate
 mr = 0.5 #Mutation rate
 N = 20 #Population size
-T = 25 #Number of generations
+T = 20 #Number of generations
 t_size = 5 #tournament size
 w = 0.3 #penalization weight
 max_params = 2e6
@@ -272,20 +272,20 @@ for member in pop:
 final_population = pd.DataFrame(list(zip(final_networks, final_connections)), columns = ['Network Architecture', 'Connections'])
 
 '''Saving Results as CSV'''
-final_population.to_csv('/home/proy_ext_adolfo.vargas/DeepGA/final_population.csv', index = False)
-final_population.to_csv('final_population.csv', index = False)
-results.to_csv('/home/proy_ext_adolfo.vargas/DeepGA/results.csv', index = False)
-results.to_csv('results.csv', index = False)      
+final_population.to_csv('/home/proy_ext_adolfo.vargas/DeepGA/final_population2.csv', index = False)
+final_population.to_csv('final_population2.csv', index = False)
+results.to_csv('/home/proy_ext_adolfo.vargas/DeepGA/results2.csv', index = False)
+results.to_csv('results2.csv', index = False)      
 stop = timeit.default_timer()
 execution_time = (stop-start)/3600
 print("Execution time: ", execution_time)
 
 #Saving objects
-with open('/home/proy_ext_adolfo.vargas/cnns.pkl', 'wb') as output:
+with open('/home/proy_ext_adolfo.vargas/cnns2.pkl', 'wb') as output:
     pickle.dump(objects, output, pickle.HIGHEST_PROTOCOL)
     output.close()
 
-with open('cnns.pkl', 'wb') as output:
+with open('cnns.pkl2', 'wb') as output:
     pickle.dump(objects, output, pickle.HIGHEST_PROTOCOL)
     output.close()
     
