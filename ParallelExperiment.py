@@ -285,7 +285,7 @@ with open('/home/proy_ext_adolfo.vargas/cnns2.pkl', 'wb') as output:
     pickle.dump(objects, output, pickle.HIGHEST_PROTOCOL)
     output.close()
 
-with open('cnns.pkl2', 'wb') as output:
+with open('cnns2.pkl', 'wb') as output:
     pickle.dump(objects, output, pickle.HIGHEST_PROTOCOL)
     output.close()
     
