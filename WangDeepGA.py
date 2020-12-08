@@ -28,8 +28,8 @@ from multiprocessing import Process, Manager
 import pickle
 
 #Random seed
-random.seed(5)
-torch.manual_seed(5)
+random.seed(6)
+torch.manual_seed(6)
 
 #Loading data
 train_dl, test_dl = loading_data()
