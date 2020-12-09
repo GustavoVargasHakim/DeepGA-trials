@@ -68,8 +68,8 @@ def dominance_sorting(Pop):
                 
 
 #Random seed
-random.seed(1)
-torch.manual_seed(1)
+#random.seed(1)
+#torch.manual_seed(1)
 
 #Loading data
 train_dl, test_dl = loading_data()
