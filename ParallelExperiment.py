@@ -236,9 +236,8 @@ for t in range(T):
     #bestParams.append(leader[3])
     
         
-    print('Best fitness: ', leader[1])
-    print('Best accuracy: ', leader[2])
-    print('Best No. of Params: ', leader[3])
+    print('Best accuracy: ', leader[1])
+    print('Best No. of Params: ', leader[2])
     print('No. of Conv. Layers: ', leader[0].n_block)
     print('No. of FC Layers: ', leader[0].n_full)
     print('--------------------------------------------')

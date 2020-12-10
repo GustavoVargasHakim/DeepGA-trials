@@ -106,8 +106,8 @@ max_full = 4
 '''Genetic Algorithm Parameters'''
 cr = 0.7 #Crossover rate
 mr = 0.5 #Mutation rate
-N = 20 #Population size
-T = 20 #Number of generations
+N = 10 #Population size
+T = 1 #Number of generations
 t_size = 5 #tournament size
 w = 0.3 #penalization weight
 max_params = 2e6
@@ -236,9 +236,8 @@ for t in range(T):
     #bestParams.append(leader[3])
     
         
-    print('Best fitness: ', leader[1])
-    print('Best accuracy: ', leader[2])
-    print('Best No. of Params: ', leader[3])
+    print('Best accuracy: ', leader[1])
+    print('Best No. of Params: ', leader[2])
     print('No. of Conv. Layers: ', leader[0].n_block)
     print('No. of FC Layers: ', leader[0].n_full)
     print('--------------------------------------------')
