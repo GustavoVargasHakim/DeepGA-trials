@@ -1,21 +1,21 @@
 Network Architecture,Connections
-"The network has 3 dense blocks with: (7, 3) (8, 5) (4, 4) and 1 fully-connected layers with: (8) neurons",( [ zero - ][ zero - zero - one - zero - zero - zero - ][ one - one - zero - ]
-"The network has 3 dense blocks with: (6, 4) (4, 4) (5, 3) and 1 fully-connected layers with: (4) neurons",( [ one - one - one - ][ one - zero - zero - ][ zero - ]
-"The network has 3 dense blocks with: (6, 5) (8, 5) (4, 4) and 2 fully-connected layers with: (4)(8) neurons",( [ zero - one - zero - zero - one - zero - ][ zero - zero - one - zero - zero - zero - ][ one - one - zero - ]
-"The network has 3 dense blocks with: (7, 5) (4, 5) (11, 4) and 5 fully-connected layers with: (4)(8)(128)(8)(32) neurons",( [ zero - one - zero - zero - one - one - ][ zero - one - zero - one - one - one - ][ one - one - zero - ]
-"The network has 2 dense blocks with: (4, 5) (11, 4) and 5 fully-connected layers with: (4)(8)(128)(8)(32) neurons",( [ zero - one - zero - one - one - one - ][ one - one - zero - ]
-"The network has 2 dense blocks with: (4, 5) (11, 4) and 5 fully-connected layers with: (4)(32)(128)(8)(4) neurons",( [ zero - one - zero - one - one - one - ][ one - one - zero - ]
-"The network has 4 dense blocks with: (4, 4) (7, 4) (4, 5) (4, 4) and 1 fully-connected layers with: (8) neurons",( [ one - one - zero - ][ zero - zero - one - one - zero - zero - ][ one - zero - one - one - one - one - ][ one - one - zero - ]
-"The network has 2 dense blocks with: (6, 5) (11, 4) and 3 fully-connected layers with: (64)(32)(128) neurons",( [ zero - zero - zero - one - one - one - ][ one - one - zero - ]
-"The network has 3 dense blocks with: (11, 4) (8, 4) (4, 4) and 2 fully-connected layers with: (4)(64) neurons",( [ one - one - zero - ][ one - one - one - ][ one - one - zero - ]
-"The network has 3 dense blocks with: (5, 3) (4, 5) (4, 4) and 5 fully-connected layers with: (4)(8)(128)(32)(32) neurons",( [ zero - ][ zero - one - zero - one - one - one - ][ one - one - zero - ]
-"The network has 2 dense blocks with: (12, 4) (11, 4) and 3 fully-connected layers with: (32)(8)(128) neurons",( [ zero - zero - zero - one - zero - one - ][ one - one - zero - ]
-"The network has 2 dense blocks with: (4, 5) (11, 4) and 5 fully-connected layers with: (4)(8)(128)(8)(4) neurons",( [ zero - one - zero - one - one - one - ][ one - one - zero - ]
-"The network has 3 dense blocks with: (11, 4) (8, 4) (11, 4) and 2 fully-connected layers with: (4)(32) neurons",( [ one - one - zero - ][ one - one - one - ][ one - one - zero - ]
-"The network has 2 dense blocks with: (12, 4) (11, 4) and 3 fully-connected layers with: (32)(128)(32) neurons",( [ zero - zero - zero - one - zero - one - ][ one - one - zero - ]
-"The network has 3 dense blocks with: (6, 5) (11, 4) (4, 4) and 2 fully-connected layers with: (4)(64) neurons",( [ zero - one - zero - zero - one - zero - ][ one - one - zero - ][ one - one - zero - ]
-"The network has 3 dense blocks with: (5, 3) (5, 3) (6, 3) and 4 fully-connected layers with: (4)(64)(4)(32) neurons",( [ one - ][ zero - ][ one - ]
-"The network has 2 dense blocks with: (4, 5) (11, 4) and 5 fully-connected layers with: (4)(8)(128)(32)(128) neurons",( [ zero - one - zero - one - one - one - ][ one - one - zero - ]
-"The network has 4 dense blocks with: (8, 5) (8, 5) (4, 5) (4, 4) and 1 fully-connected layers with: (8) neurons",( [ zero - zero - one - zero - zero - zero - ][ zero - zero - one - ][ one - zero - one - one - one - one - ][ one - one - zero - ]
-"The network has 3 dense blocks with: (7, 3) (11, 4) (4, 4) and 1 fully-connected layers with: (8) neurons",( [ zero - ][ one - one - zero - ][ one - one - zero - ]
-"The network has 2 dense blocks with: (11, 4) (11, 4) and 5 fully-connected layers with: (4)(8)(128)(32)(128) neurons",( [ zero - zero - zero - one - one - one - ][ one - one - zero - ]
+"The network has 5 convolutional layers with: (2, 2, off, 3) (2, 7, max, 4) (16, 3, avg, 5) (16, 7, max, 2) (8, 5, max, 2) and 3 fully-connected layers with: (4)(32)(128) neurons",zero - one - zero - zero - one - zero - 
+"The network has 5 convolutional layers with: (16, 4, off, 3) (2, 7, max, 4) (16, 3, avg, 5) (16, 7, max, 2) (8, 5, max, 2) and 3 fully-connected layers with: (4)(32)(128) neurons",zero - one - zero - zero - zero - zero - 
+"The network has 4 convolutional layers with: (16, 3, avg, 2) (32, 4, max, 5) (8, 5, max, 2) (16, 7, max, 2) and 3 fully-connected layers with: (4)(32)(128) neurons",zero - one - zero - 
+"The network has 4 convolutional layers with: (16, 3, avg, 2) (16, 7, max, 2) (8, 2, avg, 2) (8, 5, max, 2) and 3 fully-connected layers with: (4)(8)(128) neurons",zero - zero - zero - 
+"The network has 4 convolutional layers with: (16, 3, avg, 2) (16, 7, max, 2) (8, 2, avg, 2) (8, 5, max, 2) and 3 fully-connected layers with: (4)(8)(128) neurons",zero - zero - zero - 
+"The network has 4 convolutional layers with: (16, 3, avg, 2) (16, 7, max, 2) (8, 2, avg, 2) (8, 5, max, 2) and 5 fully-connected layers with: (8)(128)(8)(64)(128) neurons",zero - zero - zero - 
+"The network has 5 convolutional layers with: (16, 3, avg, 2) (16, 7, max, 2) (16, 3, avg, 5) (16, 7, max, 2) (8, 5, max, 2) and 3 fully-connected layers with: (4)(32)(128) neurons",zero - zero - zero - zero - one - zero - 
+"The network has 4 convolutional layers with: (16, 3, avg, 2) (16, 7, max, 2) (8, 2, avg, 2) (8, 5, max, 2) and 3 fully-connected layers with: (4)(8)(128) neurons",zero - zero - zero - 
+"The network has 5 convolutional layers with: (16, 3, avg, 2) (16, 7, max, 2) (16, 3, avg, 5) (16, 7, max, 2) (8, 5, max, 2) and 4 fully-connected layers with: (8)(4)(32)(128) neurons",zero - zero - zero - zero - one - zero - 
+"The network has 4 convolutional layers with: (16, 3, avg, 2) (16, 7, max, 2) (8, 2, avg, 2) (8, 5, max, 2) and 3 fully-connected layers with: (4)(8)(128) neurons",zero - zero - zero - 
+"The network has 4 convolutional layers with: (16, 3, avg, 2) (16, 7, max, 2) (8, 2, avg, 2) (8, 5, max, 2) and 4 fully-connected layers with: (4)(4)(8)(128) neurons",zero - zero - zero - 
+"The network has 4 convolutional layers with: (16, 3, avg, 2) (16, 7, max, 2) (8, 5, max, 2) (2, 2, off, 3) and 3 fully-connected layers with: (4)(32)(128) neurons",zero - zero - one - 
+"The network has 4 convolutional layers with: (16, 3, avg, 2) (16, 7, max, 2) (2, 7, max, 4) (8, 5, max, 2) and 3 fully-connected layers with: (4)(32)(128) neurons",zero - zero - zero - 
+"The network has 4 convolutional layers with: (16, 3, avg, 2) (2, 8, off, 2) (8, 2, avg, 2) (8, 5, max, 2) and 3 fully-connected layers with: (4)(8)(128) neurons",zero - zero - zero - 
+"The network has 4 convolutional layers with: (16, 3, avg, 2) (16, 7, max, 2) (2, 7, max, 4) (8, 5, max, 2) and 3 fully-connected layers with: (4)(32)(128) neurons",zero - zero - zero - 
+"The network has 4 convolutional layers with: (16, 3, avg, 2) (16, 7, max, 2) (8, 2, avg, 2) (8, 5, max, 2) and 3 fully-connected layers with: (4)(32)(128) neurons",one - zero - zero - 
+"The network has 5 convolutional layers with: (16, 3, avg, 2) (8, 2, avg, 2) (16, 3, avg, 5) (8, 5, max, 2) (8, 5, max, 2) and 3 fully-connected layers with: (4)(8)(128) neurons",zero - zero - zero - zero - one - zero - 
+"The network has 5 convolutional layers with: (16, 3, avg, 2) (16, 7, max, 2) (16, 3, avg, 5) (16, 7, max, 2) (8, 5, max, 2) and 3 fully-connected layers with: (4)(32)(128) neurons",zero - zero - zero - zero - one - zero - 
+"The network has 4 convolutional layers with: (16, 3, avg, 2) (16, 7, max, 2) (8, 2, avg, 2) (8, 5, max, 2) and 3 fully-connected layers with: (4)(8)(128) neurons",zero - zero - zero - 
+"The network has 4 convolutional layers with: (16, 3, avg, 2) (16, 7, max, 2) (8, 2, avg, 2) (8, 5, max, 2) and 3 fully-connected layers with: (4)(8)(128) neurons",zero - zero - zero - 
