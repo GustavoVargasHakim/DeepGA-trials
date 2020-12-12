@@ -190,8 +190,8 @@ for t in range(T):
     print('--------------------------------------------')
 
 results = pd.DataFrame(list(zip(bestAcc, bestF, bestParams)), columns = ['Accuracy', 'Fitness', 'No. Params'])
-results.to_csv('/home/proy_ext_adolfo.vargas/DeepGA/results.csv', index = False)
-results.to_csv('results.csv', index = False)
+results.to_csv('/home/proy_ext_adolfo.vargas/DeepGA/results2.csv', index = False)
+results.to_csv('results2.csv', index = False)
 stop = timeit.default_timer()
 execution_time = (stop-start)/3600
 print("Execution time: ", execution_time)
@@ -238,16 +238,16 @@ for member in pop:
 final_population = pd.DataFrame(list(zip(final_networks, final_connections)), columns = ['Network Architecture', 'Connections'])
 
 '''Saving Results as CSV'''
-final_population.to_csv('/home/proy_ext_adolfo.vargas/DeepGA/final_population.csv', index = False)
-final_population.to_csv('final_population.csv', index = False)    
+final_population.to_csv('/home/proy_ext_adolfo.vargas/DeepGA/final_population2.csv', index = False)
+final_population.to_csv('final_population2.csv', index = False)    
 
 
 #Saving objects
-with open('/home/proy_ext_adolfo.vargas/cnns.pkl', 'wb') as output:
+with open('/home/proy_ext_adolfo.vargas/cnns2.pkl', 'wb') as output:
     pickle.dump(objects, output, pickle.HIGHEST_PROTOCOL)
     output.close()
 
-with open('cnns.pkl', 'wb') as output:
+with open('cnns2.pkl', 'wb') as output:
     pickle.dump(objects, output, pickle.HIGHEST_PROTOCOL)
     output.close()
     
