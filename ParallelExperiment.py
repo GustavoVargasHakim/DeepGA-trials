@@ -1,13 +1,27 @@
 # -*- coding: utf-8 -*-
 """
+Created on Thu Dec 10 10:31:09 2020
+
+@author: user
+"""
+
+# -*- coding: utf-8 -*-
+"""
+Created on Fri Nov 20 18:37:31 2020
+
+@author: user
+"""
+
+# -*- coding: utf-8 -*-
+"""
 Created on Thu Oct 22 12:43:55 2020
 
 @author: user
 """
 
-from Operators import *
-from EncodingClass import *
-from Decoding import *
+from WangOperators import *
+from WangEncoding import *
+from WangDecoding import *
 from DataReader import *
 from Training import *
 from DistributedTraining import *
@@ -20,9 +34,56 @@ from torch import nn
 from multiprocessing import Process, Manager
 import pickle
 
+def dominates(p, q):
+    if p[1] >= q[1] and p[2] <= q[2]:
+        if p[1] > q[1] or p[2] < q[2]:
+            dom = True
+        else:
+            dom = False
+    else:
+        dom = False
+            
+    return dom
+
+
+def dominance_sorting(Pop):
+    R = Pop[:]
+    F = []
+    while len(R) != 0:
+        p = R[0]
+        Fi = [p]
+        for q in [Q for Q in R if Q not in Fi]:
+            if len(Fi) == 1:
+                p = Fi[0]
+                if dominates(q, p):
+                    p = q
+                    Fi[0] = q
+                elif not dominates(p, q) and not dominates(q,p):
+                    Fi.append(q)
+            else:
+                n = 0
+                Fic = Fi[:]
+                for j in range(len(Fic)):
+                    f = Fic[j]
+                    if dominates(q, f):
+                        if q not in Fi:
+                            Fi[j] = q
+                        else:
+                            Fi.remove(f)
+                    elif not dominates(f, q) and not dominates(q,f):
+                        n += 1
+                if n == len(Fi):
+                    Fi.append(q)
+        F += Fi
+        for f in Fi:
+            R.remove(f)
+    
+    return F
+                
+
 #Random seed
-#random.seed(7)
-#torch.manual_seed(7)
+#random.seed(1)
+#torch.manual_seed(1)
 
 #Loading data
 train_dl, test_dl = loading_data()
@@ -37,6 +98,8 @@ lr = 1e-4
 #Maximun and minimum numbers of layers to initialize networks
 min_conv = 2
 max_conv = 5
+min_gr = 3
+max_gr = 12
 min_full = 1
 max_full = 4
 
@@ -44,7 +107,7 @@ max_full = 4
 cr = 0.7 #Crossover rate
 mr = 0.5 #Mutation rate
 N = 20 #Population size
-T = 50 #Number of generations
+T = 20 #Number of generations
 t_size = 5 #tournament size
 w = 0.3 #penalization weight
 max_params = 2e6
@@ -66,8 +129,8 @@ while len(pop) < N:
     acc_list = manager.list()
     
     #Creating genomes (genetic encoding)
-    e1 = Encoding(min_conv,max_conv,min_full,max_full) 
-    e2 = Encoding(min_conv,max_conv,min_full,max_full)
+    e1 = Encoding(min_conv, max_conv, min_gr, max_gr, min_full, max_full) 
+    e2 = Encoding(min_conv, max_conv, min_gr, max_gr, min_full, max_full)
     
     #Decoding the networks
     network1 = decoding(e1)
@@ -90,11 +153,11 @@ while len(pop) < N:
     training2.join()
     
     if acc_list[0][0] == '1':
-        pop.append([e1, acc_list[0][1], acc_list[0][2], acc_list[0][3]])
-        pop.append([e2, acc_list[1][1], acc_list[1][2], acc_list[1][3]])
+        pop.append([e1, acc_list[0][2], acc_list[0][3]])
+        pop.append([e2, acc_list[1][2], acc_list[1][3]])
     else:
-        pop.append([e2, acc_list[0][1], acc_list[0][2], acc_list[0][3]])
-        pop.append([e1, acc_list[1][1], acc_list[1][2], acc_list[1][3]])
+        pop.append([e2, acc_list[0][2], acc_list[0][3]])
+        pop.append([e1, acc_list[1][2], acc_list[1][3]])
 
 '''Genetic Algorithm'''
 for t in range(T):
@@ -156,65 +219,77 @@ for t in range(T):
             training2.join()
             
             if acc_list[0][0] == '1':
-                offspring.append([c1, acc_list[0][1], acc_list[0][2], acc_list[0][3]])
-                offspring.append([c2, acc_list[1][1], acc_list[1][2], acc_list[1][3]])
+                offspring.append([c1, acc_list[0][2], acc_list[0][3]])
+                offspring.append([c2, acc_list[1][2], acc_list[1][3]])
             else:
-                offspring.append([c2, acc_list[0][1], acc_list[0][2], acc_list[0][3]])
-                offspring.append([c1, acc_list[1][1], acc_list[1][2], acc_list[1][3]])
+                offspring.append([c2, acc_list[0][2], acc_list[0][3]])
+                offspring.append([c1, acc_list[1][2], acc_list[1][3]])
        
     #Replacement with elitism
     pop = pop + offspring
-    pop.sort(reverse = True, key = lambda x: x[1])
+    pop = dominance_sorting(pop)
     pop = pop[:N]
     
     leader = max(pop, key = lambda x: x[1])
-    bestAcc.append(leader[2])
-    bestF.append(leader[1])
-    bestParams.append(leader[3])
+    #bestAcc.append(leader[2])
+    #bestF.append(leader[1])
+    #bestParams.append(leader[3])
     
         
-    print('Best fitness: ', leader[1])
-    print('Best accuracy: ', leader[2])
-    print('Best No. of Params: ', leader[3])
-    print('No. of Conv. Layers: ', leader[0].n_conv)
+    print('Best accuracy: ', leader[1])
+    print('Best No. of Params: ', leader[2])
+    print('No. of Conv. Layers: ', leader[0].n_block)
     print('No. of FC Layers: ', leader[0].n_full)
     print('--------------------------------------------')
 
-results = pd.DataFrame(list(zip(bestAcc, bestF, bestParams)), columns = ['Accuracy', 'Fitness', 'No. Params'])
+stop = timeit.default_timer()
+execution_time = (stop-start)/3600
+print("Execution time: ", execution_time)
+accuracy = []
+parameters = []
+for p in pop:
+    accuracy.append(p[1])
+    parameters.append(p[2])
+
+results = pd.DataFrame(list(zip(accuracy, parameters)), columns = ['Accuracy', 'No. Params'])
 final_networks = []
 final_connections = []
 objects = []
 for member in pop:
     p = member[0]
     objects.append(p)
-    n_conv = p.n_conv
+    n_block = p.n_block
     n_full = p.n_full
-    description = 'The network has ' + str(n_conv) + ' convolutional layers ' + 'with: '
-    for i in range(n_conv):
+    connections = '( '
+    description = 'The network has ' + str(n_block) + ' dense blocks ' + 'with: '
+    for i in range(n_block):
         nfilters = str(p.first_level[i]['nfilters'])
-        fsize = str(p.first_level[i]['fsize'])
-        pool = str(p.first_level[i]['pool'])
-        psize = str(p.first_level[i]['psize'])
-        layer = '(' + nfilters + ', ' + fsize + ', ' + pool + ', ' + psize + ') '
+        n_conv = str(p.first_level[i]['nconv'])
+        conn = p.second_level[i]
+        
+        layer = '(' + nfilters + ', ' + n_conv  + ') '
         description += layer
+        
+        
+        block = '[ '
+        for bit in p.second_level[i]:
+            if bit == 1:
+                block += 'one - '  
+            if bit == 0:
+                block += 'zero - '
+        block += ']'
+        connections += block
+    final_connections.append(connections)
     description += 'and '
     description += str(n_full)
     description += ' '
     description += 'fully-connected layers with: '
-    for i in range(n_conv, n_conv+n_full):
+    for i in range(n_block, n_block+n_full):
         neurons = str(p.first_level[i]['neurons'])
         layer = '(' + neurons + ')'
         description += layer
     description += ' neurons'
     final_networks.append(description)
-    
-    connections = ''
-    for bit in p.second_level:
-        if bit == 1:
-            connections += 'one - '
-        if bit == 0:
-            connections += 'zero - '
-    final_connections.append(connections)
 
      
 final_population = pd.DataFrame(list(zip(final_networks, final_connections)), columns = ['Network Architecture', 'Connections'])
@@ -224,9 +299,7 @@ final_population.to_csv('/home/proy_ext_adolfo.vargas/DeepGA/final_population3.c
 final_population.to_csv('final_population3.csv', index = False)
 results.to_csv('/home/proy_ext_adolfo.vargas/DeepGA/results3.csv', index = False)
 results.to_csv('results3.csv', index = False)      
-stop = timeit.default_timer()
-execution_time = (stop-start)/3600
-print("Execution time: ", execution_time)
+
 
 #Saving objects
 with open('/home/proy_ext_adolfo.vargas/cnns3.pkl', 'wb') as output:
