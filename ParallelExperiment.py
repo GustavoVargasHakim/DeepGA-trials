@@ -1,12 +1,5 @@
 # -*- coding: utf-8 -*-
 """
-Created on Thu Dec 10 10:31:09 2020
-
-@author: user
-"""
-
-# -*- coding: utf-8 -*-
-"""
 Created on Fri Nov 20 18:37:31 2020
 
 @author: user
@@ -19,9 +12,9 @@ Created on Thu Oct 22 12:43:55 2020
 @author: user
 """
 
-from WangOperators import *
-from WangEncoding import *
-from WangDecoding import *
+from Operators import *
+from EncodingClass import *
+from Decoding import *
 from DataReader import *
 from Training import *
 from DistributedTraining import *
@@ -98,8 +91,6 @@ lr = 1e-4
 #Maximun and minimum numbers of layers to initialize networks
 min_conv = 2
 max_conv = 5
-min_gr = 3
-max_gr = 12
 min_full = 1
 max_full = 4
 
@@ -129,8 +120,8 @@ while len(pop) < N:
     acc_list = manager.list()
     
     #Creating genomes (genetic encoding)
-    e1 = Encoding(min_conv, max_conv, min_gr, max_gr, min_full, max_full) 
-    e2 = Encoding(min_conv, max_conv, min_gr, max_gr, min_full, max_full)
+    e1 = Encoding(min_conv,max_conv,min_full,max_full) 
+    e2 = Encoding(min_conv,max_conv,min_full,max_full)
     
     #Decoding the networks
     network1 = decoding(e1)
@@ -238,13 +229,10 @@ for t in range(T):
         
     print('Best accuracy: ', leader[1])
     print('Best No. of Params: ', leader[2])
-    print('No. of Conv. Layers: ', leader[0].n_block)
+    print('No. of Conv. Layers: ', leader[0].n_conv)
     print('No. of FC Layers: ', leader[0].n_full)
     print('--------------------------------------------')
 
-stop = timeit.default_timer()
-execution_time = (stop-start)/3600
-print("Execution time: ", execution_time)
 accuracy = []
 parameters = []
 for p in pop:
@@ -258,38 +246,34 @@ objects = []
 for member in pop:
     p = member[0]
     objects.append(p)
-    n_block = p.n_block
+    n_conv = p.n_conv
     n_full = p.n_full
-    connections = '( '
-    description = 'The network has ' + str(n_block) + ' dense blocks ' + 'with: '
-    for i in range(n_block):
+    description = 'The network has ' + str(n_conv) + ' convolutional layers ' + 'with: '
+    for i in range(n_conv):
         nfilters = str(p.first_level[i]['nfilters'])
-        n_conv = str(p.first_level[i]['nconv'])
-        conn = p.second_level[i]
-        
-        layer = '(' + nfilters + ', ' + n_conv  + ') '
+        fsize = str(p.first_level[i]['fsize'])
+        pool = str(p.first_level[i]['pool'])
+        psize = str(p.first_level[i]['psize'])
+        layer = '(' + nfilters + ', ' + fsize + ', ' + pool + ', ' + psize + ') '
         description += layer
-        
-        
-        block = '[ '
-        for bit in p.second_level[i]:
-            if bit == 1:
-                block += 'one - '  
-            if bit == 0:
-                block += 'zero - '
-        block += ']'
-        connections += block
-    final_connections.append(connections)
     description += 'and '
     description += str(n_full)
     description += ' '
     description += 'fully-connected layers with: '
-    for i in range(n_block, n_block+n_full):
+    for i in range(n_conv, n_conv+n_full):
         neurons = str(p.first_level[i]['neurons'])
         layer = '(' + neurons + ')'
         description += layer
     description += ' neurons'
     final_networks.append(description)
+    
+    connections = ''
+    for bit in p.second_level:
+        if bit == 1:
+            connections += 'one - '
+        if bit == 0:
+            connections += 'zero - '
+    final_connections.append(connections)
 
      
 final_population = pd.DataFrame(list(zip(final_networks, final_connections)), columns = ['Network Architecture', 'Connections'])
@@ -299,7 +283,9 @@ final_population.to_csv('/home/proy_ext_adolfo.vargas/DeepGA/final_population3.c
 final_population.to_csv('final_population3.csv', index = False)
 results.to_csv('/home/proy_ext_adolfo.vargas/DeepGA/results3.csv', index = False)
 results.to_csv('results3.csv', index = False)      
-
+stop = timeit.default_timer()
+execution_time = (stop-start)/3600
+print("Execution time: ", execution_time)
 
 #Saving objects
 with open('/home/proy_ext_adolfo.vargas/cnns3.pkl', 'wb') as output:
